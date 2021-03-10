@@ -64,8 +64,25 @@ Node *findNode(Graph *graph, unsigned int id)
 
 int deleteNode(Graph *graph, Node *node)
 {
-    // stub
-    return 0;
+    if (node == NULL) return 0;
+    Node *result = findNode(graph, node->id);
+    if (result == NULL) return 0;
+
+    // Fill the hole in the list by linking the previous node with the next
+    if (node->previous != NULL)
+    {
+        node->previous->next = node->next;
+    }
+
+    // If removing the first node in the list
+    if (graph->nodeHead == node)
+    {
+        graph->nodeHead = node->next;
+    }
+
+    free(node);
+
+    return 1;
 }
 
 Edge *addEdge(Graph *graph, Node *start, Node *End, double weight)
