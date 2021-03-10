@@ -45,7 +45,7 @@ Graph *createGraph();
 /**
  * Deletes all nodes and frees a graph from memory
  * @param graph The graph to delete
- * @returns Status code
+ * @returns 1 if successful
  */
 int deleteGraph(Graph *graph);
 
@@ -69,7 +69,7 @@ Node *findNode(Graph *graph, unsigned int id);
  * Removes a node from a graph and deletes from memory
  * @param graph The graph to remove the node from
  * @param node The node to remove
- * @return Status code
+ * @return 1 if successful
  */
 int deleteNode(Graph *graph, Node *node);
 
@@ -77,8 +77,8 @@ int deleteNode(Graph *graph, Node *node);
  * Adds a weighted edge connecting two nodes in the graph
  * @param graph The graph to add the node to
  * @param start The starting node
- * @param end The ending nodes
- * @param weight @remarks Can not be negative
+ * @param end The ending node
+ * @param weight The edges weight, can not be negative
  * @return A pointer to the new edge
  */
 Edge *addEdge(Graph *graph, Node *start, Node *end, double weight);
@@ -87,7 +87,7 @@ Edge *addEdge(Graph *graph, Node *start, Node *end, double weight);
  * Removes an edge from the graph
  * @param graph The graph to remove the edge from
  * @param edge The edge to remove
- * @return Status code
+ * @return 1 if successful
  */
 int deleteEdge(Graph *graph, Edge *edge);
 
