@@ -87,14 +87,14 @@ void deleteNode_NullGraph_Fails(void)
 {
     int result = deleteNode(NULL, NULL);
 
-    TEST_ASSERT_NOT_EQUAL(result, 1);
+    TEST_ASSERT_NOT_EQUAL(1, result);
 }
 
 void deleteNode_UnknownNode_Fails(void)
 {
     int result = deleteNode(graph, NULL);
 
-    TEST_ASSERT_NOT_EQUAL(result, 1);
+    TEST_ASSERT_NOT_EQUAL(1, result);
 }
 
 void deleteNode_KnownNode_Succeeds(void)
@@ -103,7 +103,7 @@ void deleteNode_KnownNode_Succeeds(void)
 
     int result = deleteNode(graph, node);
 
-    TEST_ASSERT_EQUAL(result, 1);
+    TEST_ASSERT_EQUAL(1, result);
 }
 
 void addEdge_NullGraph_ReturnsNull(void)
@@ -124,7 +124,7 @@ void deleteEdge_NullGraph_Fails(void)
 {
     int result = deleteEdge(NULL, NULL);
 
-    TEST_ASSERT_NOT_EQUAL(result, 1);
+    TEST_ASSERT_NOT_EQUAL(1, result);
 }
 
 void deleteEdge_ValidEdge_Succeeds(void)
@@ -135,7 +135,7 @@ void deleteEdge_ValidEdge_Succeeds(void)
 
     int result = deleteEdge(graph, edge);
 
-    TEST_ASSERT_EQUAL(result, 1);
+    TEST_ASSERT_EQUAL(1, result);
 }
 
 void deleteEdge_InvalidEdge_Fails(void)
