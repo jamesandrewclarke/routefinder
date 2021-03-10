@@ -5,7 +5,7 @@
 #include "unity.h"
 #include "graph.h"
 
-Graph *graph;
+static Graph *graph;
 
 void setUp(void)
 {
