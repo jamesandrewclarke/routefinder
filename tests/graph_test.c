@@ -149,6 +149,8 @@ void deleteEdge_InvalidEdge_Fails(void)
     // Attempt to delete this from in the main graph
     int result = deleteEdge(graph, edge);
 
+    deleteGraph(otherGraph);
+
     TEST_ASSERT_NOT_EQUAL(result, 1);
 }
 
