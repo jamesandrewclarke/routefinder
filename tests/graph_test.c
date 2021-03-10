@@ -76,6 +76,75 @@ void findNode_KnownID_ReturnsPointer(void)
     TEST_ASSERT_EQUAL(node, result);
 }
 
+void deleteNode_NullGraph_Fails(void)
+{
+    int result = deleteNode(NULL, NULL);
+
+    TEST_ASSERT_NOT_EQUAL(result, 1);
+}
+
+void deleteNode_UnknownNode_Fails(void)
+{
+    int result = deleteNode(graph, NULL);
+
+    TEST_ASSERT_NOT_EQUAL(result, 1);
+}
+
+void deleteNode_KnownNode_Succeeds(void)
+{
+    Node *node = addNode(graph, 100);
+
+    int result = deleteNode(graph, node);
+
+    TEST_ASSERT_EQUAL(result, 1);
+}
+
+void addEdge_NullGraph_ReturnsNull(void)
+{
+    Edge *edge = addEdge(NULL, NULL, NULL, 0);
+
+    TEST_ASSERT_NULL(edge);
+}
+
+void addEdge_NullConnectingNodes_ReturnsNull(void)
+{
+    Edge *edge = addEdge(graph, NULL, NULL, 0);
+
+    TEST_ASSERT_NULL(edge);
+}
+
+void deleteEdge_NullGraph_Fails(void)
+{
+    int result = deleteEdge(NULL, NULL);
+
+    TEST_ASSERT_NOT_EQUAL(result, 1);
+}
+
+void deleteEdge_ValidEdge_Succeeds(void)
+{
+    Node *first = addNode(graph, 1);
+    Node *second = addNode(graph, 2);
+    Edge *edge = addEdge(graph, first, second, 100);
+
+    int result = deleteEdge(graph, edge);
+
+    TEST_ASSERT_EQUAL(result, 1);
+}
+
+void deleteEdge_InvalidEdge_Fails(void)
+{
+    // Create a valid edge, but in another graph
+    Graph *otherGraph = createGraph();
+    Node *first = addNode(otherGraph, 1);
+    Node *second = addNode(otherGraph, 2);
+    Edge *edge = addEdge(otherGraph, first, second, 100);
+
+    // Attempt to delete this from in the main graph
+    int result = deleteEdge(graph, edge);
+
+    TEST_ASSERT_NOT_EQUAL(result, 1);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -89,6 +158,17 @@ int main()
     RUN_TEST(findNode_NullGraph_ReturnsNull);
     RUN_TEST(findNode_NonexistentID_ReturnsNull);
     RUN_TEST(findNode_KnownID_ReturnsPointer);
+
+    RUN_TEST(deleteNode_NullGraph_Fails);
+    RUN_TEST(deleteNode_UnknownNode_Fails);
+    RUN_TEST(deleteNode_KnownNode_Succeeds);
+
+    RUN_TEST(addEdge_NullConnectingNodes_ReturnsNull);
+    RUN_TEST(addEdge_NullGraph_ReturnsNull);
+
+    RUN_TEST(deleteEdge_InvalidEdge_Fails);
+    RUN_TEST(deleteEdge_NullGraph_Fails);
+    RUN_TEST(deleteEdge_ValidEdge_Succeeds);
     return UNITY_END();
 }
 

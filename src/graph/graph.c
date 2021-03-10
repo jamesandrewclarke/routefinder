@@ -41,3 +41,28 @@ Node *addNode(Graph *graph, unsigned int id)
 
     return new;
 }
+
+Node *findNode(Graph *graph, unsigned int id)
+{
+    // stub
+    return NULL;
+}
+
+int deleteNode(Graph *graph, Node *node)
+{
+    // stub
+    return 0;
+}
+
+Edge *addEdge(Graph *graph, Node *start, Node *End, double weight)
+{
+    // stub
+    return NULL;
+}
+
+int deleteEdge(Graph *graph, Edge *edge)
+{
+    // stub
+    return 0;
+}
+

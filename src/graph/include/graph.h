@@ -83,4 +83,12 @@ int deleteNode(Graph *graph, Node *node);
  */
 Edge *addEdge(Graph *graph, Node *start, Node *end, double weight);
 
+/**
+ * Removes an edge from the graph
+ * @param graph The graph to remove the edge from
+ * @param edge The edge to remove
+ * @return Status code
+ */
+int deleteEdge(Graph *graph, Edge *edge);
+
 #endif //ROUTEFINDER_GRAPH_H
