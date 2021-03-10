@@ -15,6 +15,7 @@ Graph *createGraph()
 
 int deleteGraph(Graph *graph)
 {
+    if (graph == NULL) return 0;
     Node *node = graph->nodeHead;
     // Traverse the linked list and free each node pointer
     while (node != NULL)

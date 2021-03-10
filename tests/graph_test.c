@@ -28,6 +28,13 @@ void createGraph_HasNullHeads(void)
     TEST_ASSERT_NULL(graph->nodeHead);
 }
 
+void deleteGraph_NullGraph_Fails(void)
+{
+    int result = deleteGraph(NULL);
+
+    TEST_ASSERT_NOT_EQUAL(1, result);
+}
+
 void addNode_NullGraph_ReturnsNull(void)
 {
     Node *node = addNode(NULL, 10);
@@ -150,6 +157,8 @@ int main()
     UNITY_BEGIN();
     RUN_TEST(createGraph_HasNullHeads);
     RUN_TEST(createGraph_ReturnsPointer);
+
+    RUN_TEST(deleteGraph_NullGraph_Fails);
 
     RUN_TEST(addNode_NullGraph_ReturnsNull);
     RUN_TEST(addNode_DuplicateID_ReturnsNull);
