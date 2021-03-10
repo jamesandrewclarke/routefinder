@@ -32,6 +32,9 @@ Node *addNode(Graph *graph, unsigned int id)
 {
     if (graph == NULL) return NULL;
 
+    // Guard against duplicate IDs
+    if (findNode(graph, id) != NULL) return NULL;
+
     Node *new = malloc(sizeof(Node));
     new->id = id;
 
@@ -44,7 +47,18 @@ Node *addNode(Graph *graph, unsigned int id)
 
 Node *findNode(Graph *graph, unsigned int id)
 {
-    // stub
+    if (graph == NULL) return NULL;
+
+    Node *node = graph->nodeHead;
+    // Traverse the linked list
+    while (node != NULL)
+    {
+        if (node->id == id)
+        {
+            return node;
+        }
+        node = node->next;
+    }
     return NULL;
 }
 
