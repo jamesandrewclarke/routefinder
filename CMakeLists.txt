@@ -11,6 +11,6 @@ project(
 include(CTest)
 list(APPEND CMAKE_CTEST_ARGUMENTS "--output-on-failure")
 
-# add_subdirectory(src)
+add_subdirectory(src)
 add_subdirectory(tests)
 add_subdirectory(extern/Unity)
