@@ -51,6 +51,14 @@ void addNode_DuplicateID_ReturnsNull(void)
     TEST_ASSERT_NULL(second);
 }
 
+void addNode_ValidParameters_Successful(void)
+{
+    const int id = 55;
+    Node *new = addNode(graph, id);
+
+    TEST_ASSERT_EQUAL_INT(id, new->id);
+}
+
 void addNode_SetsGraphHeadToNewNode(void)
 {
     Node *new = addNode(graph, 100);
@@ -165,6 +173,7 @@ int main()
     RUN_TEST(addNode_NullGraph_ReturnsNull);
     RUN_TEST(addNode_DuplicateID_ReturnsNull);
     RUN_TEST(addNode_SetsGraphHeadToNewNode);
+    RUN_TEST(addNode_ValidParameters_Successful);
 
     RUN_TEST(findNode_NullGraph_ReturnsNull);
     RUN_TEST(findNode_NonexistentID_ReturnsNull);
