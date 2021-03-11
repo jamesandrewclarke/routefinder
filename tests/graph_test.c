@@ -128,6 +128,15 @@ void addEdge_NullConnectingNodes_ReturnsNull(void)
     TEST_ASSERT_NULL(edge);
 }
 
+void addEdge_NegativeWeight_ReturnsNull(void)
+{
+    Node *first = addNode(graph, 1);
+    Node *second = addNode(graph, 2);
+    Edge *edge = addEdge(graph, first, second, -50);
+
+    TEST_ASSERT_NULL(edge);
+}
+
 void deleteEdge_NullGraph_Fails(void)
 {
     int result = deleteEdge(NULL, NULL);
@@ -185,6 +194,7 @@ int main()
 
     RUN_TEST(addEdge_NullConnectingNodes_ReturnsNull);
     RUN_TEST(addEdge_NullGraph_ReturnsNull);
+    RUN_TEST(addEdge_NegativeWeight_ReturnsNull);
 
     RUN_TEST(deleteEdge_InvalidEdge_Fails);
     RUN_TEST(deleteEdge_NullGraph_Fails);

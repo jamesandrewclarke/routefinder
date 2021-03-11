@@ -78,7 +78,7 @@ int deleteNode(Graph *graph, Node *node);
  * @param graph The graph to add the node to
  * @param start The starting node
  * @param end The ending node
- * @param weight The edges weight, can not be negative
+ * @param weight A nonnegative weight for the edge
  * @return A pointer to the new edge
  */
 Edge *addEdge(Graph *graph, Node *start, Node *end, double weight);
