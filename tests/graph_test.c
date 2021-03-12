@@ -91,6 +91,25 @@ void findNode_KnownID_ReturnsPointer(void)
     TEST_ASSERT_EQUAL(node, result);
 }
 
+void findNode_KnownID_GraphWithMultipleEdges_ReturnsPointer(void)
+{
+    const int ID_TO_CHECK = 23;
+    Node *savedNode;
+    // Add a large amount of edges
+    for (int i = 0; i < 100; i++)
+    {
+        Node *node = addNode(graph, i);
+        if (i == ID_TO_CHECK)
+        {
+            savedNode = node;
+        }
+    }
+
+    Node *result = findNode(graph, ID_TO_CHECK);
+
+    TEST_ASSERT_EQUAL(result, savedNode);
+}
+
 void deleteNode_NullGraph_Fails(void)
 {
     int result = deleteNode(NULL, NULL);
@@ -187,6 +206,7 @@ int main()
     RUN_TEST(findNode_NullGraph_ReturnsNull);
     RUN_TEST(findNode_NonexistentID_ReturnsNull);
     RUN_TEST(findNode_KnownID_ReturnsPointer);
+    RUN_TEST(findNode_KnownID_GraphWithMultipleEdges_ReturnsPointer);
 
     RUN_TEST(deleteNode_NullGraph_Fails);
     RUN_TEST(deleteNode_UnknownNode_Fails);
