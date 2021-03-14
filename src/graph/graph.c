@@ -1,100 +1,74 @@
 //
-// Created by James Clarke on 10/03/2021.
+// Created by James Clarke on 12/03/2021.
 //
 
-#include <stdlib.h>
 #include "include/graph.h"
+#include <stdlib.h>
 
-Graph *createGraph()
+Graph *createGraph(unsigned int vertices)
 {
-    Graph *graph = malloc(sizeof(Graph));
-    graph->nodeHead = NULL;
-    graph->edgeHead = NULL;
-    return graph;
+    if (vertices == 0) return NULL;
+
+    Graph *new = malloc(sizeof(Graph));
+    new->numVertices = vertices;
+    new->vertices = calloc(vertices, sizeof(AdjacencyList));
+
+    for (int i = 0; i < new->numVertices; i++)
+    {
+        AdjacencyList *adjList = new->vertices + i;
+        adjList->vertex = i;
+        adjList->head = NULL;
+    }
+
+    return new;
 }
 
 int deleteGraph(Graph *graph)
 {
     if (graph == NULL) return 0;
-    Node *node = graph->nodeHead;
-    // Traverse the linked list and free each node pointer
-    while (node != NULL)
+
+    for (int i = 0; i < graph->numVertices; i++)
     {
-        Node *next = node->next;
-        free(node);
-        node = next;
+        AdjacencyList *adjList = graph->vertices + i;
+
+        // First we need to clear out the linked lists
+
+        Edge *head = adjList->head;
+
+        while (head != NULL)
+        {
+            Edge *next = head->next;
+            free(head);
+            head = next;
+        }
     }
+
+    free(graph->vertices);
     free(graph);
 
     return 1;
 }
 
-Node *addNode(Graph *graph, unsigned int id)
+Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional)
 {
     if (graph == NULL) return NULL;
+    if (start > graph->numVertices || end > graph->numVertices) return NULL;
 
-    // Guard against duplicate IDs
-    if (findNode(graph, id) != NULL) return NULL;
+    Edge **head = &graph->vertices[start].head;
+    // Allocate a new edge
+    Edge *new = calloc(1, sizeof(Edge));
+    new->vertex = end;
+    new->weight = weight;
+    new->next = *head;
+    *head = new;
 
-    Node *new = malloc(sizeof(Node));
-    new->id = id;
-
-    new->next = graph->nodeHead;
-    new->previous = NULL;
-    graph->nodeHead = new;
+    if (directional)
+    {
+        createEdge(graph, end, start, weight, 0);
+    }
 
     return new;
 }
 
-Node *findNode(Graph *graph, unsigned int id)
-{
-    if (graph == NULL) return NULL;
 
-    Node *node = graph->nodeHead;
-    // Traverse the linked list
-    while (node != NULL)
-    {
-        if (node->id == id)
-        {
-            return node;
-        }
-        node = node->next;
-    }
-    return NULL;
-}
-
-int deleteNode(Graph *graph, Node *node)
-{
-    if (node == NULL) return 0;
-    Node *result = findNode(graph, node->id);
-    if (result == NULL) return 0;
-
-    // Fill the hole in the list by linking the previous node with the next
-    if (node->previous != NULL)
-    {
-        node->previous->next = node->next;
-    }
-
-    // If removing the first node in the list
-    if (graph->nodeHead == node)
-    {
-        graph->nodeHead = node->next;
-    }
-
-    free(node);
-
-    return 1;
-}
-
-Edge *addEdge(Graph *graph, Node *start, Node *End, double weight)
-{
-    // stub
-    return NULL;
-}
-
-int deleteEdge(Graph *graph, Edge *edge)
-{
-    // stub
-    return 0;
-}
 

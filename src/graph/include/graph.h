@@ -1,94 +1,56 @@
 //
-// Created by James Clarke on 10/03/2021.
+// Created by James Clarke on 12/03/2021.
 //
 
 #ifndef ROUTEFINDER_GRAPH_H
 #define ROUTEFINDER_GRAPH_H
 
-typedef struct Node Node;
+typedef struct AdjacencyList AdjacencyList;
 typedef struct Edge Edge;
+typedef struct Graph Graph;
 
-struct Node
+struct Graph
 {
-    unsigned int id;
-    Node *previous;
-    Node *next;
+    unsigned int numVertices;
+    AdjacencyList *vertices;
+};
+
+struct AdjacencyList
+{
+    unsigned int vertex;
+    Edge *head;
 };
 
 struct Edge
 {
-    Node *start;
-    Node *end;
-    double weight;
-    Edge *previous;
+    unsigned int vertex;
+    float weight;
     Edge *next;
 };
 
 /**
- * Represents a simple weighted graph
- * Contains a set of nodes and the edges connecting them.
- * @remarks Both sets are doubly linked lists
+ * Allocates and initialises fields of a graph
+ * @param vertices The number of vertices, must be greater than zero.
+ * @return A pointer to the new graph
  */
-typedef struct
-{
-    Node *nodeHead;
-    Edge *edgeHead;
-} Graph;
-
+Graph *createGraph(unsigned int vertices);
 
 /**
- * Allocates and initialises fields for a Graph struct
- * @return A pointer to a Graph
- */
-Graph *createGraph();
-
-/**
- * Deletes all nodes and frees a graph from memory
+ * Frees the memory used by a Graph
  * @param graph The graph to delete
- * @returns 1 if successful
+ * @return A status code, 1 if successful
  */
 int deleteGraph(Graph *graph);
 
 /**
- * Adds a node to a Graph
- * @param graph The graph to add the node to
- * @param id A unique identifier for the node
- * @return A pointer to the new node
- */
-Node *addNode(Graph *graph, unsigned int id);
-
-/**
- * Searches for a node by its id
- * @param graph The graph to search
- * @param id The id to use as a search parameter
- * @return If one exists, the pointer to the node, or NULL.
- */
-Node *findNode(Graph *graph, unsigned int id);
-
-/**
- * Removes a node from a graph and deletes from memory
- * @param graph The graph to remove the node from
- * @param node The node to remove
- * @return 1 if successful
- */
-int deleteNode(Graph *graph, Node *node);
-
-/**
- * Adds a weighted edge connecting two nodes in the graph
- * @param graph The graph to add the node to
- * @param start The starting node
- * @param end The ending node
- * @param weight A nonnegative weight for the edge
+ * Creates a weighted edge between two vertices
+ * @param graph The graph to create an edge in
+ * @param start The index of the starting vertex
+ * @param end The index of the destination vertex
+ * @param weight The weight of the edge
+ * @param directional Should not be 0 if a directed edge
  * @return A pointer to the new edge
  */
-Edge *addEdge(Graph *graph, Node *start, Node *end, double weight);
-
-/**
- * Removes an edge from the graph
- * @param graph The graph to remove the edge from
- * @param edge The edge to remove
- * @return 1 if successful
- */
-int deleteEdge(Graph *graph, Edge *edge);
+Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional);
 
 #endif //ROUTEFINDER_GRAPH_H

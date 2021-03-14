@@ -2,6 +2,8 @@
 // Created by James Clarke on 10/03/2021.
 //
 
+#define NUM_VERTICES 10
+
 #include "unity.h"
 #include "graph.h"
 
@@ -9,7 +11,7 @@ static Graph *graph;
 
 void setUp(void)
 {
-    graph = createGraph();
+    graph = createGraph(NUM_VERTICES);
 }
 
 void tearDown(void)
@@ -22,10 +24,28 @@ void createGraph_ReturnsPointer(void)
     TEST_ASSERT_NOT_NULL(graph);
 }
 
-void createGraph_HasNullHeads(void)
+void createGraph_InitialisesAdjacencyLists(void)
 {
-    TEST_ASSERT_NULL(graph->edgeHead);
-    TEST_ASSERT_NULL(graph->nodeHead);
+    for (int i = 0; i < NUM_VERTICES; i++)
+    {
+        AdjacencyList *adjList = graph->vertices + i;
+
+        // There are no edges, so the head of the linked list should be null
+        TEST_ASSERT_NULL(adjList->head);
+        TEST_ASSERT_EQUAL(i, adjList->vertex);
+    }
+}
+
+void createGraph_ContainsCorrectNumberOfVertices(void)
+{
+    TEST_ASSERT_EQUAL_INT(NUM_VERTICES, graph->numVertices);
+}
+
+void createGraph_ZeroVertices_ReturnsNull(void)
+{
+    Graph *zeroGraph = createGraph(0);
+
+    TEST_ASSERT_NULL(zeroGraph);
 }
 
 void deleteGraph_NullGraph_Fails(void)
@@ -35,190 +55,67 @@ void deleteGraph_NullGraph_Fails(void)
     TEST_ASSERT_NOT_EQUAL(1, result);
 }
 
-void addNode_NullGraph_ReturnsNull(void)
+void createEdge_NullGraph_ReturnsNull(void)
 {
-    Node *node = addNode(NULL, 10);
-
-    TEST_ASSERT_NULL(node);
-}
-
-void addNode_DuplicateID_ReturnsNull(void)
-{
-    Node *first = addNode(graph, 10);
-    Node *second = addNode(graph, 10);
-
-    TEST_ASSERT_NOT_NULL(first);
-    TEST_ASSERT_NULL(second);
-}
-
-void addNode_ValidParameters_Successful(void)
-{
-    const int id = 55;
-    Node *new = addNode(graph, id);
-
-    TEST_ASSERT_EQUAL_INT(id, new->id);
-}
-
-void addNode_SetsGraphHeadToNewNode(void)
-{
-    Node *new = addNode(graph, 100);
-
-    TEST_ASSERT_EQUAL(new, graph->nodeHead);
-}
-
-void findNode_NullGraph_ReturnsNull(void)
-{
-    Node *result = findNode(NULL, 1000);
-
-    TEST_ASSERT_NULL(result);
-}
-
-void findNode_NonexistentID_ReturnsNull(void)
-{
-    Node *result = findNode(graph, 1000);
-
-    TEST_ASSERT_NULL(result);
-}
-
-void findNode_KnownID_ReturnsPointer(void)
-{
-    int id = 10;
-    Node *node = addNode(graph, id);
-
-    Node *result = findNode(graph, id);
-
-    TEST_ASSERT_NOT_NULL(result);
-    TEST_ASSERT_EQUAL(node, result);
-}
-
-void findNode_KnownID_GraphWithMultipleEdges_ReturnsPointer(void)
-{
-    const int ID_TO_CHECK = 23;
-    Node *savedNode;
-    // Add a large amount of edges
-    for (int i = 0; i < 100; i++)
-    {
-        Node *node = addNode(graph, i);
-        if (i == ID_TO_CHECK)
-        {
-            savedNode = node;
-        }
-    }
-
-    Node *result = findNode(graph, ID_TO_CHECK);
-
-    TEST_ASSERT_EQUAL(result, savedNode);
-}
-
-void deleteNode_NullGraph_Fails(void)
-{
-    int result = deleteNode(NULL, NULL);
-
-    TEST_ASSERT_NOT_EQUAL(1, result);
-}
-
-void deleteNode_UnknownNode_Fails(void)
-{
-    int result = deleteNode(graph, NULL);
-
-    TEST_ASSERT_NOT_EQUAL(1, result);
-}
-
-void deleteNode_KnownNode_Succeeds(void)
-{
-    Node *node = addNode(graph, 100);
-
-    int result = deleteNode(graph, node);
-
-    TEST_ASSERT_EQUAL(1, result);
-}
-
-void addEdge_NullGraph_ReturnsNull(void)
-{
-    Edge *edge = addEdge(NULL, NULL, NULL, 0);
+    Edge *edge = createEdge(NULL, 2, 7, 10.2, 1);
 
     TEST_ASSERT_NULL(edge);
 }
 
-void addEdge_NullConnectingNodes_ReturnsNull(void)
+void createEdge_InvalidVertices_ReturnsNull(void)
 {
-    Edge *edge = addEdge(graph, NULL, NULL, 0);
+    Edge *edge1 = createEdge(graph, NUM_VERTICES * 2, NUM_VERTICES + 3, 12, 1);
+    Edge *edge2 = createEdge(graph, NUM_VERTICES - 3, NUM_VERTICES + 2, 5, 1);
+    Edge *edge3 = createEdge(graph, NUM_VERTICES + 4, NUM_VERTICES - 3, 10, 1);
 
-    TEST_ASSERT_NULL(edge);
+    TEST_ASSERT_NULL(edge1);
+    TEST_ASSERT_NULL(edge2);
+    TEST_ASSERT_NULL(edge3);
 }
 
-void addEdge_NegativeWeight_ReturnsNull(void)
+void createEdge_ValidParameters_ReturnsPointer(void)
 {
-    Node *first = addNode(graph, 1);
-    Node *second = addNode(graph, 2);
-    Edge *edge = addEdge(graph, first, second, -50);
+    Edge *edge = createEdge(graph, 2, 3, 5, 1);
 
-    TEST_ASSERT_NULL(edge);
+    TEST_ASSERT_NOT_NULL(edge);
 }
 
-void deleteEdge_NullGraph_Fails(void)
+void createEdge_ValidParameters_CreatesEdgesCorrectly(void)
 {
-    int result = deleteEdge(NULL, NULL);
+    createEdge(graph, 2, 3, 10, 0);
 
-    TEST_ASSERT_NOT_EQUAL(1, result);
+    Edge *result = graph->vertices[2].head;
+    TEST_ASSERT_EQUAL_INT(3, result->vertex);
+    TEST_ASSERT_EQUAL_FLOAT(10, result->weight);
+    TEST_ASSERT_NULL(result->next);
 }
 
-void deleteEdge_ValidEdge_Succeeds(void)
+void createEdge_NotDirectional_CreatesEdgeFromEndToStart(void)
 {
-    Node *first = addNode(graph, 1);
-    Node *second = addNode(graph, 2);
-    Edge *edge = addEdge(graph, first, second, 100);
+    createEdge(graph, 4, 5, 12, 1);
 
-    int result = deleteEdge(graph, edge);
+    Edge *result = graph->vertices[5].head;
 
-    TEST_ASSERT_EQUAL(1, result);
-}
-
-void deleteEdge_InvalidEdge_Fails(void)
-{
-    // Create a valid edge, but in another graph
-    Graph *otherGraph = createGraph();
-    Node *first = addNode(otherGraph, 1);
-    Node *second = addNode(otherGraph, 2);
-    Edge *edge = addEdge(otherGraph, first, second, 100);
-
-    // Attempt to delete this from in the main graph
-    int result = deleteEdge(graph, edge);
-
-    deleteGraph(otherGraph);
-
-    TEST_ASSERT_NOT_EQUAL(result, 1);
+    TEST_ASSERT_EQUAL_INT(4, result->vertex);
+    TEST_ASSERT_EQUAL_FLOAT(12, result->weight);
+    TEST_ASSERT_NULL(result->next);
 }
 
 int main()
 {
     UNITY_BEGIN();
-    RUN_TEST(createGraph_HasNullHeads);
     RUN_TEST(createGraph_ReturnsPointer);
+    RUN_TEST(createGraph_ContainsCorrectNumberOfVertices);
+    RUN_TEST(createGraph_ZeroVertices_ReturnsNull);
+    RUN_TEST(createGraph_InitialisesAdjacencyLists);
 
     RUN_TEST(deleteGraph_NullGraph_Fails);
 
-    RUN_TEST(addNode_NullGraph_ReturnsNull);
-    RUN_TEST(addNode_DuplicateID_ReturnsNull);
-    RUN_TEST(addNode_SetsGraphHeadToNewNode);
-    RUN_TEST(addNode_ValidParameters_Successful);
-
-    RUN_TEST(findNode_NullGraph_ReturnsNull);
-    RUN_TEST(findNode_NonexistentID_ReturnsNull);
-    RUN_TEST(findNode_KnownID_ReturnsPointer);
-    RUN_TEST(findNode_KnownID_GraphWithMultipleEdges_ReturnsPointer);
-
-    RUN_TEST(deleteNode_NullGraph_Fails);
-    RUN_TEST(deleteNode_UnknownNode_Fails);
-    RUN_TEST(deleteNode_KnownNode_Succeeds);
-
-    RUN_TEST(addEdge_NullConnectingNodes_ReturnsNull);
-    RUN_TEST(addEdge_NullGraph_ReturnsNull);
-    RUN_TEST(addEdge_NegativeWeight_ReturnsNull);
-
-    RUN_TEST(deleteEdge_InvalidEdge_Fails);
-    RUN_TEST(deleteEdge_NullGraph_Fails);
-    RUN_TEST(deleteEdge_ValidEdge_Succeeds);
+    RUN_TEST(createEdge_NullGraph_ReturnsNull);
+    RUN_TEST(createEdge_InvalidVertices_ReturnsNull);
+    RUN_TEST(createEdge_ValidParameters_ReturnsPointer);
+    RUN_TEST(createEdge_ValidParameters_CreatesEdgesCorrectly);
+    RUN_TEST(createEdge_NotDirectional_CreatesEdgeFromEndToStart);
     return UNITY_END();
 }
 
