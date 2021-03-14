@@ -90,7 +90,7 @@ void createEdge_ValidParameters_CreatesEdgesCorrectly(void)
     TEST_ASSERT_NULL(result->next);
 }
 
-void createEdge_NotDirectional_CreatesEdgeFromEndToStart(void)
+void createEdge_Directional_CreatesEdgeFromEndToStart(void)
 {
     createEdge(graph, 4, 5, 12, 1);
 
@@ -136,7 +136,7 @@ int main()
     RUN_TEST(createEdge_InvalidVertices_ReturnsNull);
     RUN_TEST(createEdge_ValidParameters_ReturnsPointer);
     RUN_TEST(createEdge_ValidParameters_CreatesEdgesCorrectly);
-    RUN_TEST(createEdge_NotDirectional_CreatesEdgeFromEndToStart);
+    RUN_TEST(createEdge_Directional_CreatesEdgeFromEndToStart);
     RUN_TEST(createEdge_EdgesAreSorted);
     return UNITY_END();
 }
