@@ -73,6 +73,13 @@ void createEdge_InvalidVertices_ReturnsNull(void)
     TEST_ASSERT_NULL(edge3);
 }
 
+void createEdge_SameStartAndEndVertex_ReturnsNull(void)
+{
+    Edge *edge = createEdge(graph, 1, 1, 10, 1);
+
+    TEST_ASSERT_NULL(edge);
+}
+
 void createEdge_ValidParameters_ReturnsPointer(void)
 {
     Edge *edge = createEdge(graph, 2, 3, 5, 1);
@@ -134,6 +141,7 @@ int main()
 
     RUN_TEST(createEdge_NullGraph_ReturnsNull);
     RUN_TEST(createEdge_InvalidVertices_ReturnsNull);
+    RUN_TEST(createEdge_SameStartAndEndVertex_ReturnsNull);
     RUN_TEST(createEdge_ValidParameters_ReturnsPointer);
     RUN_TEST(createEdge_ValidParameters_CreatesEdgesCorrectly);
     RUN_TEST(createEdge_Directional_CreatesEdgeFromEndToStart);

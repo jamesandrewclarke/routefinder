@@ -52,7 +52,7 @@ int deleteGraph(Graph *graph)
 Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional)
 {
     if (graph == NULL) return NULL;
-    if (start > graph->numVertices || end > graph->numVertices) return NULL;
+    if (start > graph->numVertices || end > graph->numVertices || start == end) return NULL;
 
     Edge **head_ref = &graph->vertices[start].head;
 
