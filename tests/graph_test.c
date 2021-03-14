@@ -101,6 +101,27 @@ void createEdge_NotDirectional_CreatesEdgeFromEndToStart(void)
     TEST_ASSERT_NULL(result->next);
 }
 
+void createEdge_EdgesAreSorted(void)
+{
+    createEdge(graph, 4, 5, 14, 1);
+    createEdge(graph, 4, 7, 11, 1);
+    createEdge(graph, 4, 7, 12, 1);
+    createEdge(graph, 4, 8, 15, 1);
+
+    Edge *result = graph->vertices[4].head;
+
+    TEST_ASSERT_EQUAL_FLOAT(11, result->weight);
+    result = result->next;
+
+    TEST_ASSERT_EQUAL_FLOAT(12, result->weight);
+    result = result->next;
+
+    TEST_ASSERT_EQUAL_FLOAT(14, result->weight);
+    result = result->next;
+
+    TEST_ASSERT_EQUAL_FLOAT(15, result->weight);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -116,6 +137,7 @@ int main()
     RUN_TEST(createEdge_ValidParameters_ReturnsPointer);
     RUN_TEST(createEdge_ValidParameters_CreatesEdgesCorrectly);
     RUN_TEST(createEdge_NotDirectional_CreatesEdgeFromEndToStart);
+    RUN_TEST(createEdge_EdgesAreSorted);
     return UNITY_END();
 }
 

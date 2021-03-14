@@ -54,13 +54,22 @@ Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weigh
     if (graph == NULL) return NULL;
     if (start > graph->numVertices || end > graph->numVertices) return NULL;
 
-    Edge **head = &graph->vertices[start].head;
+    Edge **head_ref = &graph->vertices[start].head;
+
+    if (*head_ref != NULL)
+    {
+        while ((*head_ref)->weight < weight)
+        {
+            head_ref = &(*head_ref)->next;
+            if (*head_ref == NULL) break;
+        }
+    }
     // Allocate a new edge
     Edge *new = calloc(1, sizeof(Edge));
     new->vertex = end;
     new->weight = weight;
-    new->next = *head;
-    *head = new;
+    new->next = *head_ref;
+    *head_ref = new;
 
     if (directional)
     {
