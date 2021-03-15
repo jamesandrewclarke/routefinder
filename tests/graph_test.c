@@ -129,6 +129,20 @@ void createEdge_EdgesAreSorted(void)
     TEST_ASSERT_EQUAL_FLOAT(15, result->weight);
 }
 
+void createEdge_DuplicateEdge_ReturnsNull(void)
+{
+    createEdge(graph, 2, 3, 12, 1);
+    createEdge(graph, 2, 9, 11, 1);
+
+    // An edge with the same weight but to a different vertex should be allowed
+    Edge *sameWeight = createEdge(graph, 2, 4, 12, 1);
+    // The graph should not contain two edges between the same vertices with the same weight
+    Edge *duplicate = createEdge(graph, 2, 9, 11, 1);
+
+    TEST_ASSERT_NOT_NULL(sameWeight);
+    TEST_ASSERT_NULL(duplicate);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -146,6 +160,7 @@ int main()
     RUN_TEST(createEdge_ValidParameters_CreatesEdgesCorrectly);
     RUN_TEST(createEdge_Directional_CreatesEdgeFromEndToStart);
     RUN_TEST(createEdge_EdgesAreSorted);
+    RUN_TEST(createEdge_DuplicateEdge_ReturnsNull);
     return UNITY_END();
 }
 

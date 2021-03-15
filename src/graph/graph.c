@@ -56,14 +56,24 @@ Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weigh
 
     Edge **head_ref = &graph->vertices[start].head;
 
+    // Select the pointer for 'head_ref' to insert edges in ascending order of weight
     if (*head_ref != NULL)
     {
         while ((*head_ref)->weight < weight)
         {
             head_ref = &(*head_ref)->next;
-            if (*head_ref == NULL) break;
+            if (*head_ref == NULL)
+            {
+                break;
+            }
+        }
+
+        if (*head_ref != NULL)
+        {
+            if ((*head_ref)->weight == weight && (*head_ref)->vertex == end) return NULL;
         }
     }
+
     // Allocate a new edge
     Edge *new = calloc(1, sizeof(Edge));
     new->vertex = end;
@@ -78,6 +88,3 @@ Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weigh
 
     return new;
 }
-
-
-
