@@ -2,8 +2,7 @@
 // Created by James Clarke on 12/03/2021.
 //
 
-#ifndef ROUTEFINDER_GRAPH_H
-#define ROUTEFINDER_GRAPH_H
+#pragma once
 
 typedef struct AdjacencyList AdjacencyList;
 typedef struct Edge Edge;
@@ -52,5 +51,3 @@ int deleteGraph(Graph *graph);
  * @return A pointer to the new edge
  */
 Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional);
-
-#endif //ROUTEFINDER_GRAPH_H
