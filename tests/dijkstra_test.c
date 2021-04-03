@@ -25,7 +25,7 @@ void dijkstra_CorrectParameters_ReturnsShortestRoute(void)
     createEdge(graph, 3, 5, 2, 1);
     createEdge(graph, 4, 5, 3, 1);
 
-    Edge *path = dijkstra_shortestRoute(graph, 0, 6);
+    Edge *path = dijkstra_shortestRoute(graph, 0, 5);
     TEST_ASSERT_NOT_NULL(path);
     TEST_ASSERT_EQUAL_INT(0, path->vertex);
     TEST_ASSERT_EQUAL_INT(2, path->next->vertex);
