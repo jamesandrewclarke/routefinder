@@ -1,1 +1,1 @@
-add_library(graph include/graph.h graph.c)
+add_library(graph graph.c)
