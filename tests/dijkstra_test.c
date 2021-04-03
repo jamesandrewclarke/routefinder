@@ -31,6 +31,17 @@ void dijkstra_CorrectParameters_ReturnsShortestRoute(void)
     TEST_ASSERT_EQUAL_INT(2, path->next->vertex);
     TEST_ASSERT_EQUAL_INT(4, path->next->next->vertex);
     TEST_ASSERT_EQUAL_INT(5, path->next->next->next->vertex);
+    deleteGraph(graph);
+}
+
+void dijkstra_DisconnectedVertices_ReturnsNull(void)
+{
+    Graph *graph = createGraph(3);
+
+    Edge *path = dijkstra_shortestRoute(graph, 0, 1);
+    TEST_ASSERT_NULL(path);
+
+    deleteGraph(graph);
 }
 
 int main()
@@ -38,6 +49,7 @@ int main()
     UNITY_BEGIN();
 
     RUN_TEST(dijkstra_CorrectParameters_ReturnsShortestRoute);
+    RUN_TEST(dijkstra_DisconnectedVertices_ReturnsNull);
 
     return UNITY_END();
 }
