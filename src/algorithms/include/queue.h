@@ -51,4 +51,4 @@ void changePriority(PriorityQueue *queue, unsigned int id, double priority);
  * @param queue The queue to extract the node from
  * @return The minimum node
  */
-Node extract_min(PriorityQueue *queue);
+Node extractMin(PriorityQueue *queue);
