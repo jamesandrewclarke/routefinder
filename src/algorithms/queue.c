@@ -4,6 +4,7 @@
 
 #include "include/queue.h"
 #include "stdlib.h"
+#include "string.h"
 
 #define INF FLT_MAX
 #define UNDEFINED -1
@@ -55,15 +56,17 @@ Node *createNode(unsigned int id, double priority)
     return node;
 }
 
-void addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
+int addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
 {
+    if (queue == NULL) return 0;
     Node *new = createNode(id, priority);
     new->next = NULL;
 
     // Double indirection lets us modify the pointer itself
-    if (queue->head == NULL) {
+    if (queue->head == NULL)
+    {
         queue->head = new;
-        return;
+        return 1;
     }
 
     Node *find = queue->head;
@@ -75,10 +78,13 @@ void addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
     }
 
     find->next = new;
+    return 1;
 }
 
-void removeFromQueue(PriorityQueue *queue, unsigned int id)
+int removeFromQueue(PriorityQueue *queue, unsigned int id)
 {
+    if (queue == NULL) return 0;
+
     Node *ref = queue->head;
     while (ref->next != NULL)
     {
@@ -87,15 +93,17 @@ void removeFromQueue(PriorityQueue *queue, unsigned int id)
             Node *next = ref->next->next;
             free(ref->next);
             ref->next = next;
+            return 1;
         }
         ref = ref->next;
     }
+
+    return 0;
 }
 
-void changePriority(PriorityQueue *queue, unsigned int id, double priority)
+int changePriority(PriorityQueue *queue, unsigned int id, double priority)
 {
-    removeFromQueue(queue, id);
-    addWithPriority(queue, id, priority);
+    return removeFromQueue(queue, id) & addWithPriority(queue, id, priority);
 }
 
 /**
@@ -105,6 +113,12 @@ void changePriority(PriorityQueue *queue, unsigned int id, double priority)
  */
 Node extractMin(PriorityQueue *queue)
 {
+    if (queue == NULL || queue->head == NULL)
+    {
+        Node result = {.id = -1}; // This indicates a failure
+        return result;
+    }
+
     Node min = *(queue->head);
     Node *next = queue->head->next;
     free(queue->head);

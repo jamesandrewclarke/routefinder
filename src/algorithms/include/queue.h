@@ -12,7 +12,7 @@ typedef struct PriorityQueue PriorityQueue;
 
 struct Node
 {
-    unsigned int id;
+    int id;
     double priority;
     Node *next;
 };
