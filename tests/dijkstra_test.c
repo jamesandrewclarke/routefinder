@@ -28,10 +28,12 @@ void dijkstra_CorrectParameters_ReturnsShortestRoute(void)
     createEdge(graph, 4, 5, 3, 1);
 
     Route *route = dijkstra_shortestRoute(graph, 0, 5);
+    unsigned int expected[] = {0, 2, 4, 5};
+
     TEST_ASSERT_NOT_NULL(route);
     TEST_ASSERT_EQUAL_INT(4, route->numVertices);
     TEST_ASSERT_EQUAL_FLOAT(8, route->cost);
-    unsigned int expected[] = {0, 2, 4, 5};
+
     TEST_ASSERT_EQUAL_INT_ARRAY(expected, route->nodes, 4);
 
     deleteGraph(graph);
@@ -50,10 +52,11 @@ void dijkstra_CorrectParameters2_ReturnsShortestRoute(void)
     createEdge(graph, 3, 4, 6, 1);
 
     Route *route = dijkstra_shortestRoute(graph, 0, 4);
+    unsigned int expected[] = {0, 3, 4};
+
     TEST_ASSERT_NOT_NULL(route);
     TEST_ASSERT_EQUAL_INT(3, route->numVertices);
     TEST_ASSERT_EQUAL_FLOAT(10, route->cost);
-    unsigned int expected[] = {0, 3, 4};
     TEST_ASSERT_EQUAL_INT_ARRAY(expected, route->nodes, 3);
 
     deleteGraph(graph);
