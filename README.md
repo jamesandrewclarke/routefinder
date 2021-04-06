@@ -1,10 +1,10 @@
 # Route Finder
 
-Given a set of nodes and edges connecting them, this program will compute the shortest path between two nodes.
+This program will take a dataset of nodes and paths,compute their shortest route and display a visualisation.
 
 ## Setup
 
-This repository contains submodules, their source must be retrieved using:
+External code is located in `extern`. For testing, Unity must be retrieved as a Git submodule using:
 
 ```
 git submodule update --init
@@ -12,13 +12,13 @@ git submodule update --init
 
 ### Building
 
-Create a build directory e.g. `build`
+**The project requires an up to date version of CMake (3.15.1)**
+
+On the university Linux machines, this can be loaded by executing `module load cmake/3.15.1`
+
 
 ```
 mkdir build
-```
-
-```
 cd build
 cmake ..
 make
