@@ -40,11 +40,11 @@ int queueIsEmpty(PriorityQueue *queue);
 
 Node *createNode(unsigned int id, double priority);
 
-void addWithPriority(PriorityQueue *queue, unsigned int id, double priority);
+int addWithPriority(PriorityQueue *queue, unsigned int id, double priority);
 
-void removeFromQueue(PriorityQueue *queue, unsigned int id);
+int removeFromQueue(PriorityQueue *queue, unsigned int id);
 
-void changePriority(PriorityQueue *queue, unsigned int id, double priority);
+int changePriority(PriorityQueue *queue, unsigned int id, double priority);
 
 /**
  * Removes the first node from the queue and returns it
