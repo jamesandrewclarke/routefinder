@@ -2,4 +2,14 @@
 
 #include "graph.h"
 
-Edge *dijkstra_shortestRoute(Graph *graph, int start, int end);
+typedef struct Route Route;
+
+struct Route {
+    int numVertices;
+    float cost;
+    unsigned int* nodes;
+};
+
+Route *dijkstra_shortestRoute(Graph *graph, unsigned int start, unsigned int end);
+
+int deleteRoute(Route *route);

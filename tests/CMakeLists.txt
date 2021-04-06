@@ -10,7 +10,7 @@ set(include_dirs
 target_link_libraries(graphtest PUBLIC unity graph)
 target_include_directories(graphtest PUBLIC ${include_dirs})
 
-target_link_libraries(dijkstratest PUBLIC unity dijkstra)
+target_link_libraries(dijkstratest PUBLIC unity dijkstra queue)
 target_include_directories(dijkstratest PUBLIC ${include_dirs})
 
 target_link_libraries(queuetest PUBLIC unity queue)
