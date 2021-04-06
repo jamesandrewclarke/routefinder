@@ -41,16 +41,6 @@ void addWithPriority_ValidParameters_Succeeds(void)
     TEST_ASSERT_EQUAL_INT(1, result);
 }
 
-void addWithPriority_DuplicateIdAndPriority_Fails(void)
-{
-    PriorityQueue *Q = createQueue();
-
-    addWithPriority(Q, 0, 5);
-    int result = addWithPriority(Q, 0, 5);
-
-    TEST_ASSERT_EQUAL_INT(0, result);
-}
-
 void addWithPriority_NullQueue_Fails(void)
 {
     int result = addWithPriority(NULL, 0, 5);
@@ -262,7 +252,6 @@ int main()
     RUN_TEST(queueIsEmpty_NonEmptyQueue_ReturnsFalse);
 
     RUN_TEST(addWithPriority_ValidParameters_Succeeds);
-    RUN_TEST(addWithPriority_DuplicateIdAndPriority_Fails);
     RUN_TEST(addWithPriority_NullQueue_Fails);
     RUN_TEST(addWithPriority_ValidParameters_AddsToQueue);
     RUN_TEST(addWithPriority_MultipleElements_AddsInOrder);
