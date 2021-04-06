@@ -71,6 +71,12 @@ int addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
 
     Node *find = queue->head;
 
+    if (find->priority > priority) {
+        new->next = find;
+        queue->head = new;
+        return 1;
+    }
+
     while (find->next != NULL)
     {
         if (find->next->priority > priority) break;
