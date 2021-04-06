@@ -92,6 +92,12 @@ int removeFromQueue(PriorityQueue *queue, unsigned int id)
     if (queue == NULL) return 0;
 
     Node *ref = queue->head;
+    if (ref->id == id) {
+        free(ref);
+        queue->head = NULL;
+        return 1;
+    }
+
     while (ref->next != NULL)
     {
         if (ref->next->id == id)
