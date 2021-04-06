@@ -32,7 +32,11 @@ Route *dijkstra_shortestRoute(Graph *graph, unsigned int start, unsigned int end
         Node minNode = extractMin(Q);
         unsigned int u = minNode.id;
 
+        // If the end node was at the front of the queue, terminate the search
+        if (u == end) break;
+
         Edge *ref = (graph->vertices + u)->head;
+        // Traverse the linked list to find the closest node
         while (ref != NULL)
         {
             unsigned int v = ref->vertex;
@@ -47,8 +51,7 @@ Route *dijkstra_shortestRoute(Graph *graph, unsigned int start, unsigned int end
         }
 
     }
-
-    // backtrack through
+    // The algorithm is complete, now we have to record the route
 
     if (prev[end] == UNDEFINED) {
         free(dist);
