@@ -71,7 +71,8 @@ int addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
 
     Node *find = queue->head;
 
-    if (find->priority > priority) {
+    if (find->priority > priority)
+    {
         new->next = find;
         queue->head = new;
         return 1;
@@ -92,7 +93,8 @@ int removeFromQueue(PriorityQueue *queue, unsigned int id)
     if (queue == NULL) return 0;
 
     Node *ref = queue->head;
-    if (ref->id == id) {
+    if (ref->id == id)
+    {
         free(ref);
         queue->head = NULL;
         return 1;
