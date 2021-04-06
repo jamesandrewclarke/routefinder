@@ -20,7 +20,7 @@ test:
     - apt update && apt -y install cmake
   script:
     - cd build
-    - make test
+    - ctest --verbose
 
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
