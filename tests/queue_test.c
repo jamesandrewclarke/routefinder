@@ -39,6 +39,8 @@ void addWithPriority_ValidParameters_Succeeds(void)
     int result = addWithPriority(Q, 0, 10);
 
     TEST_ASSERT_EQUAL_INT(1, result);
+
+    deleteQueue(Q);
 }
 
 void addWithPriority_NullQueue_Fails(void)
@@ -56,6 +58,8 @@ void addWithPriority_ValidParameters_AddsToQueue(void)
 
     TEST_ASSERT_EQUAL_INT(0, Q->head->id);
     TEST_ASSERT_EQUAL_FLOAT(7, Q->head->priority);
+
+    deleteQueue(Q);
 }
 
 void addWithPriority_MultipleElements_AddsInOrder(void)
@@ -81,6 +85,8 @@ void addWithPriority_MultipleElements_AddsInOrder(void)
     sample = sample->next;
     TEST_ASSERT_EQUAL_INT(1, sample->id);
     TEST_ASSERT_EQUAL_FLOAT(10, sample->priority);
+
+    deleteQueue(Q);
 }
 
 void removeFromQueue_NullQueue_Fails(void)
@@ -98,6 +104,8 @@ void removeFromQueue_NonexistentElement_Fails(void)
     int result = removeFromQueue(Q, 1);
 
     TEST_ASSERT_EQUAL_INT(0, result);
+
+    deleteQueue(Q);
 }
 
 void removeFromQueue_ValidElement_Succeeds(void)
@@ -108,6 +116,8 @@ void removeFromQueue_ValidElement_Succeeds(void)
     int result = removeFromQueue(Q, 0);
 
     TEST_ASSERT_EQUAL_INT(1, result);
+
+    deleteQueue(Q);
 }
 
 void removeFromQueue_ValidElement_RemovesFromQueue(void)
@@ -130,6 +140,8 @@ void removeFromQueue_ValidElement_RemovesFromQueue(void)
     sample = sample->next;
     TEST_ASSERT_EQUAL_INT(2, sample->id);
     TEST_ASSERT_EQUAL_FLOAT(7, sample->priority);
+
+    deleteQueue(Q);
 }
 
 void queueIsEmpty_EmptyQueue_ReturnsTrue(void)
@@ -209,6 +221,8 @@ void changePriority_ValidParameters_ReturnsTrue(void)
     int result = changePriority(Q, 0, 4);
 
     TEST_ASSERT_EQUAL_INT(1, result);
+
+    deleteQueue(Q);
 }
 
 void changePriority_ValidParameters_ChangesPriority(void)
@@ -219,6 +233,8 @@ void changePriority_ValidParameters_ChangesPriority(void)
     changePriority(Q, 0, 4);
 
     TEST_ASSERT_EQUAL_INT(4, Q->head->priority);
+
+    deleteQueue(Q);
 }
 
 void extractMin_NullQueue_Fails(void)
