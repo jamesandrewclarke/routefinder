@@ -6,21 +6,21 @@
 #include "unity.h"
 #include "stdlib.h"
 
+static PriorityQueue *Q;
+
 void setUp()
 {
+    Q = createQueue();
 }
 
 void tearDown()
 {
+    deleteQueue(Q);
 }
 
 void createQueue_ReturnsPointer(void)
 {
-    PriorityQueue *Q = createQueue();
-
     TEST_ASSERT_NOT_NULL(Q);
-
-    deleteQueue(Q);
 }
 
 void createNode_ReturnsPointer(void)
@@ -34,13 +34,9 @@ void createNode_ReturnsPointer(void)
 
 void addWithPriority_ValidParameters_Succeeds(void)
 {
-    PriorityQueue *Q = createQueue();
-
     int result = addWithPriority(Q, 0, 10);
 
     TEST_ASSERT_EQUAL_INT(1, result);
-
-    deleteQueue(Q);
 }
 
 void addWithPriority_NullQueue_Fails(void)
@@ -52,20 +48,14 @@ void addWithPriority_NullQueue_Fails(void)
 
 void addWithPriority_ValidParameters_AddsToQueue(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 7);
 
     TEST_ASSERT_EQUAL_INT(0, Q->head->id);
     TEST_ASSERT_EQUAL_FLOAT(7, Q->head->priority);
-
-    deleteQueue(Q);
 }
 
 void addWithPriority_MultipleElements_AddsInOrder(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 2, 7);
     addWithPriority(Q, 0, 3);
     addWithPriority(Q, 1, 10);
@@ -85,8 +75,6 @@ void addWithPriority_MultipleElements_AddsInOrder(void)
     sample = sample->next;
     TEST_ASSERT_EQUAL_INT(1, sample->id);
     TEST_ASSERT_EQUAL_FLOAT(10, sample->priority);
-
-    deleteQueue(Q);
 }
 
 void removeFromQueue_NullQueue_Fails(void)
@@ -98,32 +86,22 @@ void removeFromQueue_NullQueue_Fails(void)
 
 void removeFromQueue_NonexistentElement_Fails(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 5);
     int result = removeFromQueue(Q, 1);
 
     TEST_ASSERT_EQUAL_INT(0, result);
-
-    deleteQueue(Q);
 }
 
 void removeFromQueue_ValidElement_Succeeds(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 3);
     int result = removeFromQueue(Q, 0);
 
     TEST_ASSERT_EQUAL_INT(1, result);
-
-    deleteQueue(Q);
 }
 
 void removeFromQueue_ValidElement_RemovesFromQueue(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 3);
     addWithPriority(Q, 1, 6);
     addWithPriority(Q, 2, 7);
@@ -140,34 +118,22 @@ void removeFromQueue_ValidElement_RemovesFromQueue(void)
     sample = sample->next;
     TEST_ASSERT_EQUAL_INT(2, sample->id);
     TEST_ASSERT_EQUAL_FLOAT(7, sample->priority);
-
-    deleteQueue(Q);
 }
 
 void queueIsEmpty_EmptyQueue_ReturnsTrue(void)
 {
-    PriorityQueue *Q = createQueue();
-
     TEST_ASSERT_EQUAL_INT(1, queueIsEmpty(Q));
-
-    deleteQueue(Q);
 }
 
 void queueIsEmpty_NonEmptyQueue_ReturnsFalse(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 1, 10);
 
     TEST_ASSERT_EQUAL_INT(0, queueIsEmpty(Q));
-
-    deleteQueue(Q);
 }
 
 void extractMin_PopulatedQueue_ReturnsSmallestElement(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 5);
     addWithPriority(Q, 1, 3);
     addWithPriority(Q, 2, 7);
@@ -175,14 +141,10 @@ void extractMin_PopulatedQueue_ReturnsSmallestElement(void)
 
     TEST_ASSERT_EQUAL_INT(3, min.priority);
     TEST_ASSERT_EQUAL_INT(1, min.id);
-
-    deleteQueue(Q);
 }
 
 void extractMin_PopulatedQueue_ReturnsElementsInOrder(void)
 {
-    PriorityQueue *Q = createQueue();
-
     addWithPriority(Q, 0, 11);
     addWithPriority(Q, 1, 7);
     addWithPriority(Q, 2, 5);
@@ -202,8 +164,6 @@ void extractMin_PopulatedQueue_ReturnsElementsInOrder(void)
     min = extractMin(Q);
     TEST_ASSERT_EQUAL_INT(11, min.priority);
     TEST_ASSERT_EQUAL_INT(0, min.id);
-
-    deleteQueue(Q);
 }
 
 void changePriority_NullQueue_ReturnsFalse(void)
@@ -215,26 +175,20 @@ void changePriority_NullQueue_ReturnsFalse(void)
 
 void changePriority_ValidParameters_ReturnsTrue(void)
 {
-    PriorityQueue *Q = createQueue();
     addWithPriority(Q, 0, 3);
 
     int result = changePriority(Q, 0, 4);
 
     TEST_ASSERT_EQUAL_INT(1, result);
-
-    deleteQueue(Q);
 }
 
 void changePriority_ValidParameters_ChangesPriority(void)
 {
-    PriorityQueue *Q = createQueue();
     addWithPriority(Q, 0, 3);
 
     changePriority(Q, 0, 4);
 
     TEST_ASSERT_EQUAL_INT(4, Q->head->priority);
-
-    deleteQueue(Q);
 }
 
 void extractMin_NullQueue_Fails(void)
@@ -246,13 +200,9 @@ void extractMin_NullQueue_Fails(void)
 
 void extractMin_EmptyQueue_Fails(void)
 {
-    PriorityQueue *Q = createQueue();
-
     Node min = extractMin(Q);
 
     TEST_ASSERT_EQUAL_INT(-1, min.id);
-
-    deleteQueue(Q);
 }
 
 
