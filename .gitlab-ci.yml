@@ -1,0 +1,27 @@
+image: gcc
+
+build:
+  stage: build
+  before_script:
+    - apt update && apt -y install cmake
+  script:
+    - mkdir build && cd build
+    - cmake ..
+    - make
+  artifacts:
+    paths:
+    - build/
+
+test:
+  stage: test
+  dependencies:
+    - build
+  before_script:
+    - apt update && apt -y install cmake
+  script:
+    - cd build
+    - make test
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+
