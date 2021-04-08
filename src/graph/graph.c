@@ -5,7 +5,7 @@
 #include "include/graph.h"
 #include <stdlib.h>
 
-Graph *createGraph(unsigned int vertices)
+Graph *createGraph(const unsigned int vertices)
 {
     if (vertices == 0) return NULL;
 
@@ -49,7 +49,7 @@ int deleteGraph(Graph *graph)
     return 1;
 }
 
-Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional)
+Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end, const float weight, const int directional)
 {
     if (graph == NULL) return NULL;
     if (start > graph->numVertices || end > graph->numVertices || start == end) return NULL;

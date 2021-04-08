@@ -41,12 +41,12 @@ int deleteQueue(PriorityQueue *queue)
  * @param queue The queue to check
  * @return Boolean, 1 if empty.
  */
-int queueIsEmpty(PriorityQueue *queue)
+int queueIsEmpty(const PriorityQueue *queue)
 {
     return queue->head == NULL;
 }
 
-Node *createNode(unsigned int id, double priority)
+Node *createNode(const unsigned int id, const double priority)
 {
     Node *node = malloc(sizeof(Node));
     node->id = id;
@@ -56,7 +56,7 @@ Node *createNode(unsigned int id, double priority)
     return node;
 }
 
-int addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
+int addWithPriority(PriorityQueue *queue, const unsigned int id, const double priority)
 {
     if (queue == NULL) return 0;
     Node *new = createNode(id, priority);
@@ -88,7 +88,7 @@ int addWithPriority(PriorityQueue *queue, unsigned int id, double priority)
     return 1;
 }
 
-int removeFromQueue(PriorityQueue *queue, unsigned int id)
+int removeFromQueue(PriorityQueue *queue, const unsigned int id)
 {
     if (queue == NULL) return 0;
 
@@ -115,7 +115,7 @@ int removeFromQueue(PriorityQueue *queue, unsigned int id)
     return 0;
 }
 
-int changePriority(PriorityQueue *queue, unsigned int id, double priority)
+int changePriority(PriorityQueue *queue, const unsigned int id, const double priority)
 {
     return removeFromQueue(queue, id) & addWithPriority(queue, id, priority);
 }
@@ -129,11 +129,11 @@ Node extractMin(PriorityQueue *queue)
 {
     if (queue == NULL || queue->head == NULL)
     {
-        Node result = {.id = -1}; // This indicates a failure
+        const Node result = {.id = -1}; // This indicates a failure
         return result;
     }
 
-    Node min = *(queue->head);
+    const Node min = *(queue->head);
     Node *next = queue->head->next;
     free(queue->head);
     queue->head = next;

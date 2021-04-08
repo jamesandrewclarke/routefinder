@@ -7,7 +7,7 @@
 #include "stdlib.h"
 #include "float.h"
 
-Route *dijkstra_shortestRoute(Graph *graph, unsigned int start, unsigned int end)
+Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, const unsigned int end)
 {
     // Pseudocode from https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Using_a_priority_queue
     float *dist = calloc(graph->numVertices, sizeof(float));
@@ -29,8 +29,8 @@ Route *dijkstra_shortestRoute(Graph *graph, unsigned int start, unsigned int end
 
     while(!queueIsEmpty(Q))
     {
-        Node minNode = extractMin(Q);
-        unsigned int u = minNode.id;
+        const Node minNode = extractMin(Q);
+        const unsigned int u = minNode.id;
 
         // If the end node was at the front of the queue, terminate the search
         if (u == end) break;

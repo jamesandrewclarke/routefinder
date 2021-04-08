@@ -36,7 +36,7 @@ int deleteQueue(PriorityQueue *queue);
  * @param queue The queue to check
  * @return Boolean, 1 if empty.
  */
-int queueIsEmpty(PriorityQueue *queue);
+int queueIsEmpty(const PriorityQueue *queue);
 
 Node *createNode(unsigned int id, double priority);
 
