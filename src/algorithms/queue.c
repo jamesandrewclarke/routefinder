@@ -3,9 +3,8 @@
 //
 
 #include "include/queue.h"
-#include "stdlib.h"
-#include "string.h"
-#include "stdio.h"
+#include <stdlib.h>
+#include <string.h>
 
 #define INF FLT_MAX
 #define UNDEFINED -1

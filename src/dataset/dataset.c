@@ -5,7 +5,7 @@
 #define MAX_ARRAY_SIZE 10000
 
 #include "include/dataset.h"
-#include "string.h"
+#include <string.h>
 #include <stdlib.h>
 
 Dataset *ingest(FILE *file)

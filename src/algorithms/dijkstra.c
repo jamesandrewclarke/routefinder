@@ -4,8 +4,8 @@
 
 #include "include/dijkstra.h"
 #include "include/queue.h"
-#include "stdlib.h"
-#include "float.h"
+#include <stdlib.h>
+#include <float.h>
 
 Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, const unsigned int end)
 {
