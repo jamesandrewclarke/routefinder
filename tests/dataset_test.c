@@ -18,7 +18,7 @@ void ingest_emptyDataset_HasDefaultValues(void)
 {
     char *input = "";
 
-    FILE *fp = fmemopen(input, 0, "r");
+    FILE *fp = fmemopen(input, 1, "r");
 
     Dataset* result = ingest(fp);
 
