@@ -15,9 +15,9 @@ struct MapNode
 
 struct Link
 {
+    unsigned int id;
     unsigned int start;
     unsigned int end;
-    unsigned int way;
     float length;
     float veg;
     float arch;
