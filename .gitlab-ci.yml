@@ -17,7 +17,7 @@ test:
   dependencies:
     - build
   before_script:
-    - apt update && apt -y install cmake
+    - apt-get -qq update && apt-get -qq -y install cmake
   script:
     - cd build
     - ctest --verbose
