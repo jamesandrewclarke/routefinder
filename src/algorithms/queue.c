@@ -5,6 +5,7 @@
 #include "include/queue.h"
 #include "stdlib.h"
 #include "string.h"
+#include "stdio.h"
 
 #define INF FLT_MAX
 #define UNDEFINED -1
@@ -59,31 +60,31 @@ Node *createNode(const unsigned int id, const double priority)
 int addWithPriority(PriorityQueue *queue, const unsigned int id, const double priority)
 {
     if (queue == NULL) return 0;
+
     Node *new = createNode(id, priority);
     new->next = NULL;
 
-    // Double indirection lets us modify the pointer itself
+    // If the queue is empty, set the node to the new head and return
     if (queue->head == NULL)
     {
         queue->head = new;
         return 1;
     }
 
-    Node *find = queue->head;
-
-    if (find->priority > priority)
+    if (priority < queue->head->priority)
     {
-        new->next = find;
+        new->next = queue->head;
         queue->head = new;
         return 1;
     }
 
-    while (find->next != NULL)
+    Node *find = queue->head;
+    while (find->next != NULL && find->next->priority < priority)
     {
-        if (find->next->priority > priority) break;
         find = find->next;
     }
 
+    new->next = find->next;
     find->next = new;
     return 1;
 }
@@ -93,10 +94,11 @@ int removeFromQueue(PriorityQueue *queue, const unsigned int id)
     if (queue == NULL) return 0;
 
     Node *ref = queue->head;
+    if (ref == NULL) return 0;
     if (ref->id == id)
     {
+        queue->head = ref->next;
         free(ref);
-        queue->head = NULL;
         return 1;
     }
 
