@@ -74,6 +74,17 @@ void dijkstra_DisconnectedVertices_ReturnsNull(void)
     deleteRoute(route);
 }
 
+void dijkstra_InvalidEndNode_ReturnsNull(void)
+{
+    Graph *graph = createGraph(10);
+
+    Route *route = dijkstra_shortestRoute(graph, 0, 11); // vertex 11 does not exist
+
+    TEST_ASSERT_NULL(route);
+
+    deleteGraph(graph);
+}
+
 int main()
 {
     UNITY_BEGIN();
@@ -81,6 +92,7 @@ int main()
     RUN_TEST(dijkstra_CorrectParameters_ReturnsShortestRoute);
     RUN_TEST(dijkstra_CorrectParameters2_ReturnsShortestRoute);
     RUN_TEST(dijkstra_DisconnectedVertices_ReturnsNull);
+    RUN_TEST(dijkstra_InvalidEndNode_ReturnsNull);
 
     return UNITY_END();
 }

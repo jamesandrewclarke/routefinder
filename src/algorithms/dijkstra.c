@@ -9,6 +9,7 @@
 
 Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, const unsigned int end)
 {
+    if (end > graph->numVertices) return NULL;
     // Pseudocode from https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Using_a_priority_queue
     float *dist = calloc(graph->numVertices, sizeof(float));
     unsigned int *prev = calloc(graph->numVertices, sizeof(unsigned int));
