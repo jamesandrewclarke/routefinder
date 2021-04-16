@@ -14,11 +14,27 @@ void tearDown()
 {
 }
 
+/**
+ * Opens a file stream for a given string.
+ * The dataset module takes a FILE pointer to parse a text file, but we can mock this to read from memory
+ * for the purpose of unit testing.
+ * This is useful as it means not having to use actual files on disk containing test strings.
+ * @param string A pointer to the start of the string.
+ * @return A FILE pointer.
+ */
+FILE *stringToStream(char *string)
+{
+    size_t length = strlen(string);
+    FILE *fp = fmemopen(string, length, "r");
+
+    return fp;
+}
+
 void ingest_emptyDataset_HasDefaultValues(void)
 {
     char *input = "";
 
-    FILE *fp = fmemopen(input, 1, "r");
+    FILE *fp = stringToStream(input);
 
     Dataset *result = ingest(fp);
     fclose(fp);
@@ -39,8 +55,7 @@ void ingest_ReadsCorrectNumberOfNodesAndLinks(void)
                   "<link id=2 node=1 node=3 way=-7726 length=11.029994 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>\n"
                   "<link id=3 node=3 node=4 way=-7726 length=2.297085 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>";
 
-    unsigned long len = strlen(input);
-    FILE *fp = fmemopen(input, len, "r");
+    FILE *fp = stringToStream(input);
 
     Dataset *result = ingest(fp);
     fclose(fp);
@@ -60,8 +75,7 @@ void ingest_DanglingNodes_NotCounted(void)
                   "<link id=1 node=1 node=2 way=-8850 length=11.006410 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>";
 
 
-    unsigned long len = strlen(input);
-    FILE *fp = fmemopen(input, len, "r");
+    FILE *fp = stringToStream(input);
 
     Dataset *result = ingest(fp);
     fclose(fp);
@@ -73,13 +87,11 @@ void ingest_DanglingNodes_NotCounted(void)
 
 void ingest_ReadsCorrectValuesOfNodes(void)
 {
+    // The input requires a link to make sure the node isn't ignored
     char *input = "<node id=10 lat=53.802339 lon=-1.548265 /node>\n"
                   "<link id=1 node=10 node=10 way=0 length=11.006410 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>";
 
-    // The input requires a link to make sure the node isn't ignored
-
-    unsigned long len = strlen(input);
-    FILE *fp = fmemopen(input, len, "r");
+    FILE *fp = stringToStream(input);
 
     Dataset *result = ingest(fp);
     fclose(fp);
@@ -98,8 +110,8 @@ void ingest_ReadsCorrectValuesOfLinks(void)
     char *input = "<link id=-2143392622 node=-8847 node=-8849 way=-8850 length=11.006410 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>\n"
                   "<link id=-2143392623 node=-2560 node=-2562 way=-7726 length=11.029994 veg=0.000000 arch=0.000000 land=0.000000 POI=;/link>\n";
 
-    unsigned long len = strlen(input);
-    FILE *fp = fmemopen(input, len, "r");
+    FILE *fp = stringToStream(input);
+
     Dataset *result = ingest(fp);
     fclose(fp);
 
@@ -115,8 +127,8 @@ void ingest_ReadsCorrectValuesOfLinks(void)
 void ingest_InvalidDataset_ReturnsNull(void)
 {
     char *input = "<node i=772763242 lat=53.802339 lon=-1.548265 /node>\n";
-    unsigned long len = strlen(input);
-    FILE *fp = fmemopen(input, len, "r");
+
+    FILE *fp = stringToStream(input);
 
     Dataset *result = ingest(fp);
     fclose(fp);
