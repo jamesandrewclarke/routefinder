@@ -8,6 +8,7 @@ typedef struct Link Link;
 
 struct MapNode
 {
+    unsigned int internal_id;
     unsigned int id;
     float lat;
     float lon;

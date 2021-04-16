@@ -22,26 +22,56 @@ Dataset *ingest(FILE *file)
 
     char line[100];
 
-    while (fgets(line, 100, file)) {
-        if (strstr(line, "<node")) {
+    while (fgets(line, 100, file))
+    {
+        if (strstr(line, "<link"))
+        {
+            Link link;
+            memset(&link, 0, sizeof(Link));
+            if (sscanf(line,
+                       "<link id=%u node=%u node=%u way=%*u length=%f veg=%f arch=%f land=%f",
+                       &link.id, &link.start, &link.end, &link.length, &link.veg, &link.arch, &link.land))
+            {
+                result->links[links] = link;
+                links++;
+            } else
+            {
+                // The file format is invalid, so we exit out
+                deleteDataset(result);
+                return NULL;
+            }
+            memset(line, 0, sizeof(char));
+        }
+    }
 
+    rewind(file); // go back to the start
+
+    while (fgets(line, 100, file))
+    {
+        if (strstr(line, "<node"))
+        {
             MapNode node;
             memset(&node, 0, sizeof(MapNode));
             if (sscanf(line, "<node id=%u lat=%f lon=%f", &node.id, &node.lat, &node.lon))
             {
-                result->nodes[nodes] = node;
-                nodes++;
-            }
-
-        } else if (strstr(line, "<link")) {
-            Link link;
-            memset(&link, 0, sizeof(Link));
-            if (sscanf(line,
-                       "<link id=%u node=%u node=%u way=* length=%f veg=%f arch=%f land=%f",
-                       &link.id, &link.start, &link.end, &link.length, &link.veg, &link.arch, &link.land ))
+                // The dataset includes many nodes which are disconnected or not relevant to finding paths
+                for (int i = 0; i < links; i++)
+                {
+                    // We check each link we've already parsed to check it is referenced.
+                    Link *link = result->links + i;
+                    if (link->start == node.id || link->end == node.id)
+                    {
+                        node.internal_id = nodes; // use an incremental ID internally
+                        result->nodes[nodes] = node;
+                        nodes++;
+                        break;
+                    }
+                }
+            } else
             {
-                result->links[links] = link;
-                links++;
+                // The file format is invalid, so we exit out
+                deleteDataset(result);
+                return NULL;
             }
         }
     }
