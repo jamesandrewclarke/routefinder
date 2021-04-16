@@ -3,6 +3,7 @@
 //
 
 #define MAX_ARRAY_SIZE 10000
+#define BUFFER_SIZE 250
 
 #include "include/dataset.h"
 #include <string.h>
@@ -20,9 +21,9 @@ Dataset *ingest(FILE *file)
     int links = 0;
     int nodes = 0;
 
-    char line[100];
+    char line[BUFFER_SIZE];
 
-    while (fgets(line, 100, file))
+    while (fgets(line, BUFFER_SIZE, file))
     {
         if (strstr(line, "<link"))
         {
@@ -46,7 +47,7 @@ Dataset *ingest(FILE *file)
 
     rewind(file); // go back to the start
 
-    while (fgets(line, 100, file))
+    while (fgets(line, BUFFER_SIZE, file))
     {
         if (strstr(line, "<node"))
         {
