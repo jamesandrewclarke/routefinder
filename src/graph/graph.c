@@ -70,6 +70,7 @@ Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end,
 
         if (*head_ref != NULL)
         {
+            // Check that the edge doesn't already exist...
             if ((*head_ref)->weight == weight && (*head_ref)->vertex == end) return NULL;
         }
     }
