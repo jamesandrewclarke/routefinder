@@ -32,7 +32,7 @@ FILE *stringToStream(char *string)
 
 void ingest_emptyDataset_HasDefaultValues(void)
 {
-    char *input = "";
+    char *input = " ";
 
     FILE *fp = stringToStream(input);
 
