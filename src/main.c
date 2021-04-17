@@ -63,4 +63,8 @@ int main()
     {
         printf("%i, ", route->nodes[i]);
     }
+
+    deleteDataset(result);
+    deleteGraph(graph);
+    deleteRoute(route);
 }
