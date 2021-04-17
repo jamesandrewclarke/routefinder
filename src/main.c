@@ -13,13 +13,16 @@ int main()
     FILE *fp = fopen("../../data/Final_Map.map", "r");
     Dataset *result = ingest(fp);
 
+    // Represent the dataset as a graph
     Graph *graph = createGraph(result->numNodes);
-
+    // Each link must be represented as an edge on the graph
     for (int i = 0; i < result->numLinks; i++)
     {
         Link *link = result->links + i;
         unsigned int start = 0;
         unsigned int end = 0;
+
+        // Find the IDs of the two end nodes
         for (int j = 0; j < result->numNodes; j++)
         {
             MapNode *node = result->nodes + j;
@@ -31,7 +34,7 @@ int main()
             }
         }
 
-        if (start == 0 && end == 0)
+        if (start == 0 && end == 0) // unchanged values implies the nodes have not been found
         {
             fprintf(stderr, "Error creating edges on the graph.\n");
         } else {
@@ -39,6 +42,9 @@ int main()
         }
     }
 
+    // TODO extract the dataset conversion to a library or function, so it can be used in integration tests
+
+    // TODO Takes these values as input
     const unsigned int start = 0;
     const unsigned int end = 900;
 
