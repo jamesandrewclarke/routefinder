@@ -9,12 +9,16 @@
 #include <stdio.h>
 #include <argp.h>
 #include <stdlib.h>
+#include <string.h>
+
+#define FILEPATH_BUFFER_LENGTH 50
 
 const static char doc[] = "Route Finder - Find the optimal routes between points on a given .map file.";
 
 const static char args_doc[] = "START END";
 
 const static struct argp_option options[] = {
+        {"file", 'f', "FILE", 0, "The .map file to read from"},
         {"visualise", 'v', 0, 0, "Visualise the map in gnuplot"},
         { 0 }
 };
@@ -23,6 +27,8 @@ struct arguments {
     unsigned int start;
     unsigned int end;
     int visualise;
+    int file;
+    char filepath[FILEPATH_BUFFER_LENGTH];
 };
 
 static error_t parse_opt(int key, char *arg, struct argp_state *state)
@@ -34,6 +40,12 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
         case 'v':
             arguments->visualise = 1;
             break;
+
+        case 'f':
+            strcpy(arguments->filepath, arg);
+            arguments->file = 1; // indicates the file has been set
+            break;
+
         case ARGP_KEY_ARG:
             if (state->arg_num > 2) // too many arguments
             {
@@ -79,11 +91,21 @@ int main(int argc, char **argv)
     arguments.start = 0;
     arguments.end = 0;
     arguments.visualise = 0;
+    arguments.file = 0;
 
     // Use argp to parse the input and fill out the result in our arguments struct
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-    FILE *fp = fopen("../../data/Final_Map.map", "r");
+    char *filepath;
+    if (!arguments.file) // did the user set their own file?
+    {
+        filepath = "../../data/Final_Map.map"; // default value
+    } else
+    {
+        filepath = arguments.filepath;
+    }
+
+    FILE *fp = fopen(filepath, "r");
     if (fp == NULL)
     {
         fprintf(stderr, "Error opening dataset file.\n");
