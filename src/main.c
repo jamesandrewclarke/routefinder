@@ -158,6 +158,7 @@ int main(int argc, char **argv)
     } else
     {
         fprintf(stderr, "A route could not be found between these nodes.\n");
+        exit(1);
     }
 
     printf("Route: ");
