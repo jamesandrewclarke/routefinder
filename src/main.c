@@ -228,6 +228,16 @@ int main(int argc, char **argv)
             gnuplot_cmd(h, "set arrow from %f,%f to %f,%f lc rgb \"green\" lw 5", start->lon, start->lat, end->lon, end->lat);
         }
 
+        MapNode *source = result->nodes + route->nodes[0];
+        MapNode *destination = result->nodes + route->nodes[route->numVertices - 1];
+
+        char cmd[100];
+        sprintf(cmd, "set label \"Start\" at %f,%f", source->lon ,source->lat);
+        gnuplot_cmd(h, cmd);
+        sprintf(cmd, "set label \"End\" at %f,%f", destination->lon ,destination->lat);
+        gnuplot_cmd(h, cmd);
+
+
         printf("\nPress Ctrl+D to close.\n");
         scanf(" "); // suspend the program
         gnuplot_close(h);
