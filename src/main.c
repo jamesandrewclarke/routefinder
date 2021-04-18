@@ -84,7 +84,18 @@ int main(int argc, char **argv)
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     FILE *fp = fopen("../../data/Final_Map.map", "r");
+    if (fp == NULL)
+    {
+        fprintf(stderr, "Error opening dataset file.\n");
+        exit(1);
+    }
     Dataset *result = ingest(fp);
+
+    if (result == NULL)
+    {
+        fprintf(stderr, "Error parsing dataset.\n");
+        exit(1);
+    }
 
     // Represent the dataset as a graph
     Graph *graph = createGraph(result->numNodes);
