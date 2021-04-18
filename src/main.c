@@ -5,6 +5,7 @@
 #include "dataset.h"
 #include "graph.h"
 #include "dijkstra.h"
+#include "gnuplot_i.h"
 
 #include <stdio.h>
 #include <argp.h>
@@ -167,7 +168,70 @@ int main(int argc, char **argv)
         printf("%i, ", route->nodes[i]);
     }
 
-    printf("\n");
+    if (arguments.visualise)
+    {
+        printf("\nInitialising gnuplot...\n");
+        gnuplot_ctrl *h = gnuplot_init();
+        if (h == NULL)
+        {
+            fprintf(stderr, "Couldn't open gnuplot, ensure it is available.\n");
+            exit(1);
+        }
+
+        gnuplot_cmd(h, "set terminal qt");
+        gnuplot_setstyle(h, "points");
+        gnuplot_set_xlabel(h, "Longitude");
+        gnuplot_set_ylabel(h, "Latitude");
+
+        double x[result->numNodes];
+        double y[result->numNodes];
+
+        for (int i = 0; i < result->numNodes; i++)
+        {
+            MapNode *node = result->nodes + i;
+
+            x[i] = node->lon;
+            y[i] = node->lat;
+        }
+
+        gnuplot_plot_xy(h, x, y, result->numNodes, "Map");
+
+        for (int i = 0; i < result->numLinks; i++)
+        {
+            Link *link = result->links + i;
+
+            MapNode *start;
+            MapNode *end;
+            for (int j = 0; j < result->numNodes; j++)
+            {
+                MapNode *node = result->nodes + j;
+
+                if (node->id == link->start)
+                {
+                    start = node;
+                } else if (node->id == link->end)
+                {
+                    end = node;
+                }
+            }
+
+            gnuplot_cmd(h, "set arrow from %f,%f to %f,%f nohead", start->lon, start->lat, end->lon, end->lat);
+        }
+
+        for (int i = 0; i < route->numVertices - 1; i++)
+        {
+            unsigned int startID = route->nodes[i];
+            unsigned int endID = route->nodes[i+1];
+            MapNode *start = result->nodes + startID;
+            MapNode *end = result->nodes + endID;
+
+            gnuplot_cmd(h, "set arrow from %f,%f to %f,%f lc rgb \"green\" lw 5", start->lon, start->lat, end->lon, end->lat);
+        }
+
+        printf("\nPress Ctrl+D to close.\n");
+        scanf(" "); // suspend the program
+        gnuplot_close(h);
+    }
 
     deleteDataset(result);
     deleteGraph(graph);
