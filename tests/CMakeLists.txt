@@ -6,7 +6,7 @@ add_executable(integrationtest integration_test.c)
 
 set(include_dirs
         ${PROJECT_SOURCE_DIR}/src/graph/include
-        ${PROJECT_SOURCE_DIR}/src/algorithms/include
+        ${PROJECT_SOURCE_DIR}/src/dijkstra/include
         ${PROJECT_SOURCE_DIR}/src/dataset/include
 )
 
