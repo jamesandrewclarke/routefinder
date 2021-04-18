@@ -7,9 +7,82 @@
 #include "dijkstra.h"
 
 #include <stdio.h>
+#include <argp.h>
+#include <stdlib.h>
 
-int main()
+const static char doc[] = "Route Finder - Find the optimal routes between points on a given .map file.";
+
+const static char args_doc[] = "START END";
+
+const static struct argp_option options[] = {
+        {"visualise", 'v', 0, 0, "Visualise the map in gnuplot"},
+        { 0 }
+};
+
+struct arguments {
+    unsigned int start;
+    unsigned int end;
+    int visualise;
+};
+
+static error_t parse_opt(int key, char *arg, struct argp_state *state)
 {
+    struct arguments *arguments = state->input;
+
+    switch (key)
+    {
+        case 'v':
+            arguments->visualise = 1;
+            break;
+        case ARGP_KEY_ARG:
+            if (state->arg_num > 2) // too many arguments
+            {
+                argp_usage(state);
+                break;
+            }
+            unsigned int result = strtoul(arg, 0, 10);
+
+            switch (state->arg_num)
+            {
+                case 0:
+                    arguments->start = result;
+                    break;
+                case 1:
+                    arguments->end = result;
+                    break;
+                default:
+                   return ARGP_ERR_UNKNOWN;
+            }
+
+            break;
+
+        case ARGP_KEY_END:
+            if (state->arg_num < 2) // too few arguments
+            {
+                argp_usage(state);
+                break;
+            }
+
+        default:
+            return ARGP_ERR_UNKNOWN;
+    }
+
+    return 0;
+}
+
+const static struct argp argp = { options, parse_opt, args_doc, doc };
+
+int main(int argc, char **argv)
+{
+    // Set default values
+    struct arguments arguments;
+    arguments.start = 0;
+    arguments.end = 0;
+    arguments.visualise = 0;
+
+    // Use argp to parse the input and fill out the result in our arguments struct
+    argp_parse(&argp, argc, argv, 0, 0, &arguments);
+
     FILE *fp = fopen("../../data/Final_Map.map", "r");
     Dataset *result = ingest(fp);
 
@@ -44,11 +117,7 @@ int main()
 
     // TODO extract the dataset conversion to a library or function, so it can be used in integration tests
 
-    // TODO Takes these values as input
-    const unsigned int start = 0;
-    const unsigned int end = 900;
-
-    Route *route = dijkstra_shortestRoute(graph, start, end);
+    Route *route = dijkstra_shortestRoute(graph, arguments.start, arguments.end);
     if (route != NULL)
     {
         printf("Total Nodes: %i\n", route->numVertices);
@@ -63,6 +132,8 @@ int main()
     {
         printf("%i, ", route->nodes[i]);
     }
+
+    printf("\n");
 
     deleteDataset(result);
     deleteGraph(graph);
