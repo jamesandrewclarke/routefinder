@@ -5,6 +5,7 @@
 #include "dataset.h"
 #include "graph.h"
 #include "dijkstra.h"
+#include "convert.h"
 #include "gnuplot_i.h"
 
 #include <stdio.h>
@@ -121,35 +122,7 @@ int main(int argc, char **argv)
     }
 
     // Represent the dataset as a graph
-    Graph *graph = createGraph(result->numNodes);
-    // Each link must be represented as an edge on the graph
-    for (int i = 0; i < result->numLinks; i++)
-    {
-        Link *link = result->links + i;
-        unsigned int start = 0;
-        unsigned int end = 0;
-
-        // Find the IDs of the two end nodes
-        for (int j = 0; j < result->numNodes; j++)
-        {
-            MapNode *node = result->nodes + j;
-            if (node->id == link->start) {
-                start = node->internal_id;
-            } else if (node->id == link->end)
-            {
-                end = node->internal_id;
-            }
-        }
-
-        if (start == 0 && end == 0) // unchanged values implies the nodes have not been found
-        {
-            fprintf(stderr, "Error creating edges on the graph.\n");
-        } else {
-            createEdge(graph, start, end, link->length, 1);
-        }
-    }
-
-    // TODO extract the dataset conversion to a library or function, so it can be used in integration tests
+    Graph *graph = datasetToGraph(result);
 
     Route *route = dijkstra_shortestRoute(graph, arguments.start, arguments.end);
     if (route != NULL)
