@@ -61,7 +61,7 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
         free(dist);
         free(prev);
         deleteQueue(Q);
-        return NULL; // the endId vertex is not reachable
+        return NULL; // the end vertex is not reachable
     }
 
     Route *route = malloc(sizeof(Route));
