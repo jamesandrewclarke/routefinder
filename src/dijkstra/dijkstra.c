@@ -20,7 +20,8 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
 
     for (int i = 0; i < graph->numVertices; i++)
     {
-        if (i != start) {
+        if (i != start)
+        {
             dist[i] = INF;
             prev[i] = UNDEFINED;
         }
@@ -28,7 +29,7 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
         addWithPriority(Q, i, dist[i]);
     }
 
-    while(!queueIsEmpty(Q))
+    while (!queueIsEmpty(Q))
     {
         const Node minNode = extractMin(Q);
         const unsigned int u = minNode.id;
@@ -43,7 +44,8 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
             unsigned int v = ref->vertex;
             float alt = dist[u] + ref->weight;
 
-            if (alt < dist[v]) {
+            if (alt < dist[v])
+            {
                 dist[v] = alt;
                 prev[v] = u;
                 changePriority(Q, v, alt);
@@ -54,7 +56,8 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
     }
     // The algorithm is complete, now we have to record the route
 
-    if (prev[end] == UNDEFINED) {
+    if (prev[end] == UNDEFINED)
+    {
         free(dist);
         free(prev);
         deleteQueue(Q);
@@ -72,7 +75,7 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
         vertices++;
     }
 
-    unsigned int *nodes = calloc(vertices, sizeof(unsigned int*));
+    unsigned int *nodes = calloc(vertices, sizeof(unsigned int *));
     next = end;
     for (int i = 0; i < vertices; i++)
     {

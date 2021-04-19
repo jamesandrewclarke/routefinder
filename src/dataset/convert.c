@@ -21,7 +21,8 @@ Graph *datasetToGraph(Dataset *dataset)
         for (int j = 0; j < dataset->numNodes; j++)
         {
             MapNode *node = dataset->nodes + j;
-            if (node->id == link->startId) {
+            if (node->id == link->startId)
+            {
                 start = node->internal_id;
                 link->start = node;
             } else if (node->id == link->endId)
@@ -34,7 +35,8 @@ Graph *datasetToGraph(Dataset *dataset)
         if (start == 0 && end == 0) // unchanged values implies the nodes have not been found
         {
             return NULL;
-        } else {
+        } else
+        {
             createEdge(graph, start, end, link->length, 1);
         }
     }

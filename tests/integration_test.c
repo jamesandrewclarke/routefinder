@@ -38,7 +38,7 @@ void integration_test(void)
 
     TEST_ASSERT_EQUAL_INT(4, route->numVertices);
     TEST_ASSERT_EQUAL_FLOAT(29.596424, route->cost);
-    TEST_ASSERT_EQUAL_INT_ARRAY(((unsigned int[]){7,8,11,10}), route->nodes, 4);
+    TEST_ASSERT_EQUAL_INT_ARRAY(((unsigned int[]) {7, 8, 11, 10}), route->nodes, 4);
     TEST_ASSERT_NOT_NULL(route);
 }
 
@@ -49,7 +49,7 @@ void integration_test2(void)
 
     TEST_ASSERT_EQUAL_INT(6, route->numVertices);
     TEST_ASSERT_EQUAL_FLOAT(41.317493, route->cost);
-    TEST_ASSERT_EQUAL_INT_ARRAY(((unsigned int[]){1000, 1001, 1002, 1003, 1004, 1005}), route->nodes, 6);
+    TEST_ASSERT_EQUAL_INT_ARRAY(((unsigned int[]) {1000, 1001, 1002, 1003, 1004, 1005}), route->nodes, 6);
     TEST_ASSERT_NOT_NULL(route);
 }
 

@@ -119,15 +119,15 @@ void ingest_ReadsCorrectValuesOfLinks(void)
     Link *second = result->links + 1;
 
     // Check first
-    TEST_ASSERT_EQUAL_INT((unsigned)-2143392622, first->id);
-    TEST_ASSERT_EQUAL_INT((unsigned)-8847, first->startId);
-    TEST_ASSERT_EQUAL_INT((unsigned)-8849, first->endId);
+    TEST_ASSERT_EQUAL_INT((unsigned) -2143392622, first->id);
+    TEST_ASSERT_EQUAL_INT((unsigned) -8847, first->startId);
+    TEST_ASSERT_EQUAL_INT((unsigned) -8849, first->endId);
     TEST_ASSERT_EQUAL_FLOAT(11.006410, first->length);
 
     // Check second
-    TEST_ASSERT_EQUAL_INT((unsigned)-2143392623, second->id);
-    TEST_ASSERT_EQUAL_INT((unsigned)-2560, second->startId);
-    TEST_ASSERT_EQUAL_INT((unsigned)-2562, second->endId);
+    TEST_ASSERT_EQUAL_INT((unsigned) -2143392623, second->id);
+    TEST_ASSERT_EQUAL_INT((unsigned) -2560, second->startId);
+    TEST_ASSERT_EQUAL_INT((unsigned) -2562, second->endId);
     TEST_ASSERT_EQUAL_FLOAT(11.029994, second->length);
 
     deleteDataset(result);

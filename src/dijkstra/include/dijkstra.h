@@ -4,10 +4,11 @@
 
 typedef struct Route Route;
 
-struct Route {
+struct Route
+{
     int numVertices;
     float cost;
-    unsigned int* nodes;
+    unsigned int *nodes;
 };
 
 Route *dijkstra_shortestRoute(const Graph *graph, unsigned int start, unsigned int end);

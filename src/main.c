@@ -20,12 +20,13 @@ const static char doc[] = "Route Finder - Find the optimal routes between points
 const static char args_doc[] = "START END";
 
 const static struct argp_option options[] = {
-        {"file", 'f', "FILE", 0, "The .map file to read from"},
-        {"visualise", 'v', 0, 0, "Visualise the map in gnuplot"},
-        { 0 }
+        {"file",      'f', "FILE", 0, "The .map file to read from"},
+        {"visualise", 'v', 0,      0, "Visualise the map in gnuplot"},
+        {0}
 };
 
-struct arguments {
+struct arguments
+{
     unsigned int start;
     unsigned int end;
     int visualise;
@@ -65,7 +66,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
                     arguments->end = result;
                     break;
                 default:
-                   return ARGP_ERR_UNKNOWN;
+                    return ARGP_ERR_UNKNOWN;
             }
 
             break;
@@ -84,7 +85,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state)
     return 0;
 }
 
-const static struct argp argp = { options, parse_opt, args_doc, doc };
+const static struct argp argp = {options, parse_opt, args_doc, doc};
 
 void visualise(gnuplot_ctrl *h, Dataset *dataset, Route *route);
 
@@ -194,19 +195,20 @@ void visualise(gnuplot_ctrl *h, Dataset *dataset, Route *route)
     for (int i = 0; i < route->numVertices - 1; i++)
     {
         unsigned int startID = route->nodes[i];
-        unsigned int endID = route->nodes[i+1];
+        unsigned int endID = route->nodes[i + 1];
         MapNode *start = dataset->nodes + startID;
         MapNode *end = dataset->nodes + endID;
 
-        gnuplot_cmd(h, "set arrow from %f,%f to %f,%f lc rgb \"green\" lw 5", start->lon, start->lat, end->lon, end->lat);
+        gnuplot_cmd(h, "set arrow from %f,%f to %f,%f lc rgb \"green\" lw 5", start->lon, start->lat, end->lon,
+                    end->lat);
     }
 
     MapNode *source = dataset->nodes + route->nodes[0];
     MapNode *destination = dataset->nodes + route->nodes[route->numVertices - 1];
 
     char cmd[100];
-    sprintf(cmd, "set label \"Start\" at %f,%f", source->lon ,source->lat);
+    sprintf(cmd, "set label \"Start\" at %f,%f", source->lon, source->lat);
     gnuplot_cmd(h, cmd);
-    sprintf(cmd, "set label \"End\" at %f,%f", destination->lon ,destination->lat);
+    sprintf(cmd, "set label \"End\" at %f,%f", destination->lon, destination->lat);
     gnuplot_cmd(h, cmd);
 }
