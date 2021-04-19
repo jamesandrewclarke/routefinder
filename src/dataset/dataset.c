@@ -30,8 +30,8 @@ Dataset *ingest(FILE *file)
             Link link;
             memset(&link, 0, sizeof(Link));
             if (sscanf(line,
-                       "<link id=%u node=%u node=%u way=%*u length=%f veg=%f arch=%f land=%f",
-                       &link.id, &link.startId, &link.endId, &link.length, &link.veg, &link.arch, &link.land))
+                       "<link id=%u node=%u node=%u way=%*u length=%f",
+                       &link.id, &link.startId, &link.endId, &link.length))
             {
                 result->links[links] = link;
                 links++;

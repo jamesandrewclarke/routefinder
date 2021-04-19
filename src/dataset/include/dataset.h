@@ -22,9 +22,6 @@ struct Link
     MapNode *start;
     MapNode *end;
     float length;
-    float veg;
-    float arch;
-    float land;
 };
 
 struct Dataset
