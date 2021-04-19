@@ -17,8 +17,10 @@ struct MapNode
 struct Link
 {
     unsigned int id;
-    unsigned int start;
-    unsigned int end;
+    unsigned int startId;
+    unsigned int endId;
+    MapNode *start;
+    MapNode *end;
     float length;
     float veg;
     float arch;

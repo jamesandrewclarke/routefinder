@@ -31,7 +31,7 @@ Dataset *ingest(FILE *file)
             memset(&link, 0, sizeof(Link));
             if (sscanf(line,
                        "<link id=%u node=%u node=%u way=%*u length=%f veg=%f arch=%f land=%f",
-                       &link.id, &link.start, &link.end, &link.length, &link.veg, &link.arch, &link.land))
+                       &link.id, &link.startId, &link.endId, &link.length, &link.veg, &link.arch, &link.land))
             {
                 result->links[links] = link;
                 links++;
@@ -60,7 +60,7 @@ Dataset *ingest(FILE *file)
                 {
                     // We check each link we've already parsed to check it is referenced.
                     Link *link = result->links + i;
-                    if (link->start == node.id || link->end == node.id)
+                    if (link->startId == node.id || link->endId == node.id)
                     {
                         node.internal_id = nodes; // use an incremental ID internally
                         result->nodes[nodes] = node;

@@ -21,11 +21,13 @@ Graph *datasetToGraph(Dataset *dataset)
         for (int j = 0; j < dataset->numNodes; j++)
         {
             MapNode *node = dataset->nodes + j;
-            if (node->id == link->start) {
+            if (node->id == link->startId) {
                 start = node->internal_id;
-            } else if (node->id == link->end)
+                link->start = node;
+            } else if (node->id == link->endId)
             {
                 end = node->internal_id;
+                link->end = node;
             }
         }
 

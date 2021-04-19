@@ -185,21 +185,8 @@ void visualise(gnuplot_ctrl *h, Dataset *dataset, Route *route)
     for (int i = 0; i < dataset->numLinks; i++)
     {
         Link *link = dataset->links + i;
-
-        MapNode *start;
-        MapNode *end;
-        for (int j = 0; j < dataset->numNodes; j++)
-        {
-            MapNode *node = dataset->nodes + j;
-
-            if (node->id == link->start)
-            {
-                start = node;
-            } else if (node->id == link->end)
-            {
-                end = node;
-            }
-        }
+        MapNode *start = link->start;
+        MapNode *end = link->end;
 
         gnuplot_cmd(h, "set arrow from %f,%f to %f,%f nohead", start->lon, start->lat, end->lon, end->lat);
     }

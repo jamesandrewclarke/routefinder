@@ -115,11 +115,20 @@ void ingest_ReadsCorrectValuesOfLinks(void)
     Dataset *result = ingest(fp);
     fclose(fp);
 
-    Link expected1 = {-2143392622, -8847, -8849, (float) 11.006410, 0, 0, 0};
-    Link expected2 = {-2143392623, -2560, -2562, (float) 11.029994, 0, 0, 0};
+    Link *first = result->links + 0;
+    Link *second = result->links + 1;
 
-    TEST_ASSERT_EQUAL_MEMORY(&expected1, result->links + 0, sizeof(MapNode));
-    TEST_ASSERT_EQUAL_MEMORY(&expected2, result->links + 1, sizeof(MapNode));
+    // Check first
+    TEST_ASSERT_EQUAL_INT((unsigned)-2143392622, first->id);
+    TEST_ASSERT_EQUAL_INT((unsigned)-8847, first->startId);
+    TEST_ASSERT_EQUAL_INT((unsigned)-8849, first->endId);
+    TEST_ASSERT_EQUAL_FLOAT(11.006410, first->length);
+
+    // Check second
+    TEST_ASSERT_EQUAL_INT((unsigned)-2143392623, second->id);
+    TEST_ASSERT_EQUAL_INT((unsigned)-2560, second->startId);
+    TEST_ASSERT_EQUAL_INT((unsigned)-2562, second->endId);
+    TEST_ASSERT_EQUAL_FLOAT(11.029994, second->length);
 
     deleteDataset(result);
 }
