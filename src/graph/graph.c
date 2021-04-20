@@ -49,7 +49,7 @@ int deleteGraph(Graph *graph)
     return 1;
 }
 
-Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end, const float weight, const int directional)
+Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end, const float weight, const int undirected)
 {
     if (graph == NULL) return NULL;
     if (start > graph->numVertices || end > graph->numVertices || start == end) return NULL;
@@ -82,7 +82,7 @@ Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end,
     new->next = *head_ref;
     *head_ref = new;
 
-    if (directional)
+    if (undirected)
     {
         createEdge(graph, end, start, weight, 0);
     }

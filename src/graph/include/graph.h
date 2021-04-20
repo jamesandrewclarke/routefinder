@@ -47,7 +47,7 @@ int deleteGraph(Graph *graph);
  * @param start The index of the starting vertex
  * @param end The index of the destination vertex
  * @param weight The weight of the edge
- * @param directional Should not be 0 if a directed edge
+ * @param undirected Should not be 0 if a directed edge
  * @return A pointer to the new edge
  */
-Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int directional);
+Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end, const float weight, const int undirected);
