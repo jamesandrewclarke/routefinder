@@ -50,4 +50,4 @@ int deleteGraph(Graph *graph);
  * @param undirected Should not be 0 if a directed edge
  * @return A pointer to the new edge
  */
-Edge *createEdge(Graph *graph, const unsigned int start, const unsigned int end, const float weight, const int undirected);
+Edge *createEdge(Graph *graph, unsigned int start, unsigned int end, float weight, int undirected);
