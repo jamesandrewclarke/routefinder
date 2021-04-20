@@ -25,7 +25,7 @@ Dataset *ingest(FILE *file)
 
     while (fgets(line, BUFFER_SIZE, file))
     {
-        if (strstr(line, "<link"))
+        if (strncmp(line, "<link", 5) == 0)
         {
             Link link;
             memset(&link, 0, sizeof(Link));
@@ -49,7 +49,7 @@ Dataset *ingest(FILE *file)
 
     while (fgets(line, BUFFER_SIZE, file))
     {
-        if (strstr(line, "<node"))
+        if (strncmp(line, "<node", 5) == 0)
         {
             MapNode node;
             memset(&node, 0, sizeof(MapNode));
