@@ -26,15 +26,11 @@ Graph *createGraph(const unsigned int vertices)
 int deleteGraph(Graph *graph)
 {
     if (graph == NULL) return 0;
-
     for (int i = 0; i < graph->numVertices; i++)
     {
         AdjacencyList *adjList = graph->vertices + i;
-
-        // First we need to clear out the linked lists
-
         Edge *head = adjList->head;
-
+        // Free the linked list
         while (head != NULL)
         {
             Edge *next = head->next;
