@@ -13,7 +13,7 @@ void tearDown()
 {
 }
 
-void dijkstra_CorrectParameters_ReturnsShortestRoute(void)
+void dijkstra_ReturnsCorrectDistanceArray(void)
 {
     Graph *graph = createGraph(6);
 
@@ -27,39 +27,55 @@ void dijkstra_CorrectParameters_ReturnsShortestRoute(void)
     createEdge(graph, 3, 5, 2, 1);
     createEdge(graph, 4, 5, 3, 1);
 
-    Route *route = dijkstra_shortestRoute(graph, 0, 5);
-    unsigned int expected[] = {0, 2, 4, 5};
+    float expected[] = {0, 4, 4, 7, 5, 8};
+    DijkstraResult *result = dijkstra(graph, 0);
+
+    TEST_ASSERT_EQUAL_FLOAT_ARRAY(expected, result->dist, 6);
+
+    deleteGraph(graph);
+    deleteResult(result);
+}
+
+void dijkstra_ReturnsCorrectPrecedenceArray(void)
+{
+    Graph *graph = createGraph(6);
+
+    // This problem is from https://www.programiz.com/dsa/dijkstra-algorithm
+    createEdge(graph, 0, 1, 4, 1);
+    createEdge(graph, 0, 2, 4, 1);
+    createEdge(graph, 1, 2, 2, 1);
+    createEdge(graph, 2, 3, 3, 1);
+    createEdge(graph, 2, 4, 1, 1);
+    createEdge(graph, 2, 5, 6, 1);
+    createEdge(graph, 3, 5, 2, 1);
+    createEdge(graph, 4, 5, 3, 1);
+
+    unsigned int expected[] = {-1, 0, 0, 2, 2, 4};
+    DijkstraResult *result = dijkstra(graph, 0);
+
+    TEST_ASSERT_EQUAL_INT_ARRAY(expected, result->prev, 6);
+
+    deleteGraph(graph);
+    deleteResult(result);
+}
+
+void getRoute_ReturnsCorrectRoute(void)
+{
+    float dist[] = {0, 4, 4, 7, 5, 8};
+    unsigned int prev[] = {-1, 0, 0, 2, 2, 4};
+
+    DijkstraResult result = { dist, prev };
+
+    Route *route = getRoute(&result, 5);
+
+    // The expected route
+    unsigned int nodes[] = {0, 2, 4, 5};
 
     TEST_ASSERT_NOT_NULL(route);
+    TEST_ASSERT_EQUAL_INT_ARRAY(nodes, route->nodes, 4);
     TEST_ASSERT_EQUAL_INT(4, route->numVertices);
     TEST_ASSERT_EQUAL_FLOAT(8, route->cost);
 
-    TEST_ASSERT_EQUAL_INT_ARRAY(expected, route->nodes, 4);
-
-    deleteGraph(graph);
-    deleteRoute(route);
-}
-
-void dijkstra_CorrectParameters2_ReturnsShortestRoute(void)
-{
-    Graph *graph = createGraph(5);
-
-    createEdge(graph, 0, 1, 3, 1);
-    createEdge(graph, 0, 3, 4, 1);
-    createEdge(graph, 0, 2, 5, 1);
-    createEdge(graph, 1, 3, 3, 1);
-    createEdge(graph, 2, 4, 7, 1);
-    createEdge(graph, 3, 4, 6, 1);
-
-    Route *route = dijkstra_shortestRoute(graph, 0, 4);
-    unsigned int expected[] = {0, 3, 4};
-
-    TEST_ASSERT_NOT_NULL(route);
-    TEST_ASSERT_EQUAL_INT(3, route->numVertices);
-    TEST_ASSERT_EQUAL_FLOAT(10, route->cost);
-    TEST_ASSERT_EQUAL_INT_ARRAY(expected, route->nodes, 3);
-
-    deleteGraph(graph);
     deleteRoute(route);
 }
 
@@ -89,10 +105,12 @@ int main()
 {
     UNITY_BEGIN();
 
-    RUN_TEST(dijkstra_CorrectParameters_ReturnsShortestRoute);
-    RUN_TEST(dijkstra_CorrectParameters2_ReturnsShortestRoute);
+    RUN_TEST(dijkstra_ReturnsCorrectDistanceArray);
+    RUN_TEST(dijkstra_ReturnsCorrectPrecedenceArray);
     RUN_TEST(dijkstra_DisconnectedVertices_ReturnsNull);
     RUN_TEST(dijkstra_InvalidEndNode_ReturnsNull);
+
+    RUN_TEST(getRoute_ReturnsCorrectRoute);
 
     return UNITY_END();
 }

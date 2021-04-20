@@ -7,20 +7,6 @@
 #include <stdlib.h>
 #include <float.h>
 
-typedef struct DijkstraResult DijkstraResult;
-
-struct DijkstraResult
-{
-    float *dist;
-    unsigned int *prev;
-};
-
-/**
- * Produces an array of a path to the 'end' node from a given DijkstraResult
- * @param result The DijkstraResult to find the path from.
- * @param end The ID of the 'end' node.
- * @return A Route struct.
- */
 Route *getRoute(const DijkstraResult *result, const unsigned int end)
 {
     if (result->prev[end] == UNDEFINED)
@@ -52,12 +38,6 @@ Route *getRoute(const DijkstraResult *result, const unsigned int end)
     return route;
 }
 
-/**
- * Finds the shortest path between the 'start' node and every other node in the graph.
- * @param graph The graph containing all other nodes
- * @param start The ID of the start node.
- * @return A DijkstraResult struct containing both a distance and precedence array.
- */
 DijkstraResult *dijkstra(const Graph *graph, const unsigned int start)
 {
     // Pseudocode from https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm#Using_a_priority_queue
@@ -120,9 +100,7 @@ Route *dijkstra_shortestRoute(const Graph *graph, const unsigned int start, cons
     // The algorithm is complete, now we have to record the route
     Route *route = getRoute(result, end);
 
-    free(result->dist);
-    free(result->prev);
-    free(result);
+    deleteResult(result);
     return route;
 }
 
@@ -131,5 +109,14 @@ int deleteRoute(Route *route)
     if (route == NULL) return 0;
     free(route->nodes);
     free(route);
+    return 1;
+}
+
+int deleteResult(DijkstraResult *result)
+{
+    if (result == NULL) return 0;
+    free(result->prev);
+    free(result->dist);
+    free(result);
     return 1;
 }
