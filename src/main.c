@@ -102,12 +102,12 @@ int main(int argc, char **argv)
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     char *filepath;
-    if (!arguments.file) // did the user set their own file?
-    {
-        filepath = "../../data/Final_Map.map"; // default value
-    } else
+    if (arguments.file) // did the user set their own file?
     {
         filepath = arguments.filepath;
+    } else
+    {
+        filepath = "../../data/Final_Map.map"; // default value
     }
 
     FILE *fp = fopen(filepath, "r");
@@ -117,15 +117,21 @@ int main(int argc, char **argv)
         exit(1);
     }
     Dataset *result = ingest(fp);
+    Graph *graph = datasetToGraph(result);
 
-    if (result == NULL)
+    if (result == NULL || graph == NULL)
     {
         fprintf(stderr, "Error parsing dataset.\n");
         exit(1);
     }
 
-    // Represent the dataset as a graph
-    Graph *graph = datasetToGraph(result);
+    printf("%i nodes with %i links read from dataset\n", result->numNodes, result->numLinks);
+
+    if (arguments.start > result->numNodes || arguments.end > result->numNodes)
+    {
+        fprintf(stderr, "One of the node IDs is out of bounds for this dataset, please use numbers between 0 and %i.\n", result->numNodes);
+        exit(1);
+    }
 
     Route *route = dijkstra_shortestRoute(graph, arguments.start, arguments.end);
     if (route != NULL)
