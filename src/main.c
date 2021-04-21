@@ -217,4 +217,6 @@ void visualise(gnuplot_ctrl *h, Dataset *dataset, Route *route)
     gnuplot_cmd(h, cmd);
     sprintf(cmd, "set label \"End\" at %f,%f", destination->lon, destination->lat);
     gnuplot_cmd(h, cmd);
+
+    gnuplot_cmd(h, "replot"); // this ensures the links and labels are rendered immediately
 }
