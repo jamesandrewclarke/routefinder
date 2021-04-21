@@ -147,8 +147,9 @@ int main(int argc, char **argv)
     printf("Route: ");
     for (int i = 0; i < route->numVertices; i++)
     {
-        printf("%i, ", route->nodes[i]);
+        printf("%i -> ", route->nodes[i]);
     }
+    printf("END\n");
 
     if (arguments.visualise)
     {
