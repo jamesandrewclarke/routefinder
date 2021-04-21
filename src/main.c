@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 
 void visualise(gnuplot_ctrl *h, Dataset *dataset, Route *route)
 {
-    gnuplot_cmd(h, "set terminal qt");
+    gnuplot_cmd(h, "set terminal x11");
     gnuplot_setstyle(h, "points");
     gnuplot_set_xlabel(h, "Longitude");
     gnuplot_set_ylabel(h, "Latitude");
