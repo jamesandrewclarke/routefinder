@@ -22,7 +22,7 @@ cmake ..
 make
 ```
 
-The test suite can be run by executing `make test` in the build directory.
+The executables for the test suite are located in `build/tests`. All tests can be run at once using `make test` (or `ctest --verbose` for a more detailed output).
 
 ## Usage
 
