@@ -4,13 +4,6 @@ This program will take a dataset of nodes and paths, compute their shortest rout
 
 ## Build Instructions
 
-Unity must first be retrieved as a Git submodule using:
-
-```
-git submodule update --init
-```
-
-
 **The project targets a minimum CMake version of 3.13**
 
 On the university Linux machines, this can be loaded by executing `module load cmake/3.15.1`
